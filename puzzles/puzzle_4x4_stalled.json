@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0",
+  "grid_size": 4,
+  "characters": [
+    {
+      "cell": "A1",
+      "name": "Arthur",
+      "profession": "Baker",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_A1",
+        "type": "FACT",
+        "target": "Beatrice",
+        "status": "INNOCENT"
+      }
+    },
+    {
+      "cell": "B1",
+      "name": "Beatrice",
+      "profession": "Chef",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_B1",
+        "type": "DIFFERENT",
+        "person_a": "Beatrice",
+        "person_b": "Clara"
+      }
+    },
+    {
+      "cell": "C1",
+      "name": "Clara",
+      "profession": "Doctor",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_C1",
+        "type": "SAME",
+        "person_a": "Beatrice",
+        "person_b": "Daniel"
+      }
+    },
+    {
+      "cell": "D1",
+      "name": "Daniel",
+      "profession": "Engineer",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_D1",
+        "type": "SAME",
+        "person_a": "Daniel",
+        "person_b": "Edward"
+      }
+    },
+    {
+      "cell": "A2",
+      "name": "Edward",
+      "profession": "Florist",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_A2",
+        "type": "EXACTLY",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "A2",
+            "B2"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "B2",
+      "name": "Fiona",
+      "profession": "Gardener",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_B2",
+        "type": "AT_MOST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "A2",
+            "B2",
+            "C2"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "C2",
+      "name": "George",
+      "profession": "Historian",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_C2",
+        "type": "EXACTLY",
+        "k": 2,
+        "region": {
+          "type": "ROW",
+          "row": 2
+        }
+      }
+    },
+    {
+      "cell": "D2",
+      "name": "Hannah",
+      "profession": "Inspector",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_D2",
+        "type": "DIFFERENT",
+        "person_a": "Edward",
+        "person_b": "Ian"
+      }
+    },
+    {
+      "cell": "A3",
+      "name": "Ian",
+      "profession": "Judge",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_A3",
+        "type": "PARITY",
+        "parity": "EVEN",
+        "region": {
+          "type": "COL",
+          "col": "A"
+        }
+      }
+    },
+    {
+      "cell": "B3",
+      "name": "Julia",
+      "profession": "Knight",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_B3",
+        "type": "EXACTLY",
+        "k": 2,
+        "region": {
+          "type": "COMMON_NEIGHBORS",
+          "cell_a": "A3",
+          "cell_b": "C3"
+        }
+      }
+    },
+    {
+      "cell": "C3",
+      "name": "Kevin",
+      "profession": "Lawyer",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_C3",
+        "type": "EXACTLY",
+        "k": 1,
+        "region": {
+          "type": "COMMON_NEIGHBORS",
+          "cell_a": "B3",
+          "cell_b": "D3"
+        }
+      }
+    },
+    {
+      "cell": "D3",
+      "name": "Laura",
+      "profession": "Musician",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_D3",
+        "type": "FACT",
+        "target": "Arthur",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "A4",
+      "name": "Michael",
+      "profession": "Nurse",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_A4",
+        "type": "SAME",
+        "person_a": "Edward",
+        "person_b": "Julia"
+      }
+    },
+    {
+      "cell": "B4",
+      "name": "Nora",
+      "profession": "Officer",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_B4",
+        "type": "DIFFERENT",
+        "person_a": "Julia",
+        "person_b": "Kevin"
+      }
+    },
+    {
+      "cell": "C4",
+      "name": "Oliver",
+      "profession": "Pilot",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_C4",
+        "type": "AT_LEAST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "D4"
+          ]
+        }
+      }
+    },
+    {
+      "cell": "D4",
+      "name": "Penelope",
+      "profession": "Queen",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_D4",
+        "type": "AT_MOST",
+        "k": 0,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "D3"
+          ]
+        }
+      }
+    }
+  ],
+  "initial_face_up": [
+    "C2"
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "grid_size": 3,
+  "characters": [
+    {
+      "cell": "A1",
+      "name": "Alice",
+      "profession": "Baker",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_A1",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "B1",
+      "name": "Bob",
+      "profession": "Chef",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_B1",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "C1",
+      "name": "Charlie",
+      "profession": "Doctor",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_C1",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "A2",
+      "name": "David",
+      "profession": "Engineer",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_A2",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "B2",
+      "name": "Eve",
+      "profession": "Florist",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_B2",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "C2",
+      "name": "Frank",
+      "profession": "Gardener",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_C2",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "A3",
+      "name": "Grace",
+      "profession": "Historian",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_A3",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "B3",
+      "name": "Heidi",
+      "profession": "Inspector",
+      "status": "INNOCENT",
+      "clue": {
+        "id": "c_B3",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    },
+    {
+      "cell": "C3",
+      "name": "Ivan",
+      "profession": "Judge",
+      "status": "CRIMINAL",
+      "clue": {
+        "id": "c_C3",
+        "type": "FACT",
+        "target": "Alice",
+        "status": "CRIMINAL"
+      }
+    }
+  ],
+  "initial_face_up": [
+    "A1"
+  ]
+}

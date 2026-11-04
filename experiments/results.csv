@@ -1,0 +1,7 @@
+puzzle_id,grid_size,is_valid_format,clues_truth,uniqueness,solution_count,playability,terminal_status,steps_taken,expected_steps,initial_prim_vars,initial_aux_vars,initial_total_vars,initial_clauses,final_prim_vars,final_aux_vars,final_total_vars,final_clauses,total_sat_calls,dpll_decisions,dpll_propagations,dpll_backtracks,dpll_runtime_mean_ms,dpll_runtime_std_ms,e2e_runtime_mean_ms,e2e_runtime_std_ms,e2e_runtime_min_ms,e2e_runtime_max_ms,repetitions,counters_deterministic
+puzzle_3x3_progressive,3,True,True,UNIQUE,1,SOLVABLE_NO_GUESS,SOLVED,8,8,9,0,9,2,9,33,42,85,76,0,610,0,1.413,0.019,2.549,0.049,2.515,2.584,2,True
+puzzle_3x3_stalled,3,True,True,UNIQUE,1,STALLED,STALLED,1,1,9,48,57,95,9,48,57,98,28,124,1390,0,11.374,0.147,11.764,0.150,11.658,11.869,2,True
+puzzle_3x3_ambiguous,3,True,True,MULTIPLE,2,STALLED,STALLED,0,0,9,0,9,2,9,0,9,2,17,0,17,0,0.030,0.001,0.149,0.003,0.147,0.151,2,True
+puzzle_4x4_progressive,4,True,True,UNIQUE,1,SOLVABLE_NO_GUESS,SOLVED,15,15,16,0,16,2,16,44,60,128,248,0,4622,0,20.128,0.106,23.596,0.152,23.488,23.703,2,True
+puzzle_4x4_stalled,4,True,True,UNIQUE,1,STALLED,STALLED,0,0,16,16,32,33,16,16,32,33,31,132,586,0,2.315,0.048,2.519,0.051,2.483,2.555,2,True
+puzzle_invalid_false_clue,3,False,False,ZERO,0,SKIPPED,INVALID_PUZZLE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.000,0.000,0.000,0.000,0.000,0.000,0,True

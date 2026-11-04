@@ -1,0 +1,603 @@
+{
+  "timestamp": "2026-11-04T17:59:07.935392+00:00",
+  "manifest_file": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/manifest.json",
+  "platform_info": {
+    "system": "Linux",
+    "release": "7.1.5+kali-amd64",
+    "machine": "x86_64",
+    "python_version": "3.14.8",
+    "cpu_count": 16
+  },
+  "settings": {
+    "repetitions": 2,
+    "timeout_seconds": 30.0,
+    "manifest": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/manifest.json"
+  },
+  "results": [
+    {
+      "puzzle_id": "puzzle_3x3_progressive",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_3x3_progressive.json",
+      "grid_size": 3,
+      "description": "Progressively solvable 3x3 puzzle without guessing (8 steps). Exercises all 6 templates, PARITY, COMMON_NEIGHBORS.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 8,
+      "terminal_status": "SOLVED",
+      "total_steps": 8,
+      "initial_vars": 9,
+      "initial_prim_vars": 9,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 42,
+      "final_prim_vars": 9,
+      "final_aux_vars": 33,
+      "final_clauses": 85,
+      "total_sat_calls": 76,
+      "dpll_decisions": 0,
+      "dpll_propagations": 610,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.0014134504963294603,
+        "std_s": 1.9081285959767542e-05,
+        "min_s": 0.001399957989633549,
+        "max_s": 0.0014269430030253716,
+        "samples_s": [
+          0.0014269430030253716,
+          0.001399957989633549
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.002549287997680949,
+        "std_s": 4.889219128418681e-05,
+        "min_s": 0.0025147159976768307,
+        "max_s": 0.0025838599976850674,
+        "samples_s": [
+          0.0025838599976850674,
+          0.0025147159976768307
+        ]
+      },
+      "repetitions": 2,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 17,
+          "step_decisions": 0,
+          "step_propagations": 32,
+          "step_backtracks": 0,
+          "step_runtime_s": 3.7655001506209373e-05
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 14,
+          "step_decisions": 0,
+          "step_propagations": 41,
+          "step_backtracks": 0,
+          "step_runtime_s": 4.554000770440325e-05
+        },
+        {
+          "step_number": 3,
+          "target_cell": "A2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 3,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 50,
+          "step_backtracks": 0,
+          "step_runtime_s": 5.724899529013783e-05
+        },
+        {
+          "step_number": 4,
+          "target_cell": "B2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 4,
+          "step_sat_calls": 10,
+          "step_decisions": 0,
+          "step_propagations": 87,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00014820499200141057
+        },
+        {
+          "step_number": 5,
+          "target_cell": "C2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 5,
+          "step_sat_calls": 9,
+          "step_decisions": 0,
+          "step_propagations": 115,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00022283200087258592
+        },
+        {
+          "step_number": 6,
+          "target_cell": "A3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 6,
+          "step_sat_calls": 6,
+          "step_decisions": 0,
+          "step_propagations": 95,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0002202480027335696
+        },
+        {
+          "step_number": 7,
+          "target_cell": "B3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 7,
+          "step_sat_calls": 5,
+          "step_decisions": 0,
+          "step_propagations": 122,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00040001599700190127
+        },
+        {
+          "step_number": 8,
+          "target_cell": "C3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 8,
+          "step_sat_calls": 2,
+          "step_decisions": 0,
+          "step_propagations": 68,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00029519800591515377
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_3x3_stalled",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_3x3_stalled.json",
+      "grid_size": 3,
+      "description": "Valid 3x3 puzzle with unique complete solution, but progressive deduction stalls after 1 step.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "STALLED",
+      "expected_steps": 1,
+      "terminal_status": "STALLED",
+      "total_steps": 1,
+      "initial_vars": 57,
+      "initial_prim_vars": 9,
+      "initial_aux_vars": 48,
+      "initial_clauses": 95,
+      "final_vars": 57,
+      "final_prim_vars": 9,
+      "final_aux_vars": 48,
+      "final_clauses": 98,
+      "total_sat_calls": 28,
+      "dpll_decisions": 124,
+      "dpll_propagations": 1390,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.011374269022780936,
+        "std_s": 0.00014710791536041014,
+        "min_s": 0.011270248018263374,
+        "max_s": 0.011478290027298499,
+        "samples_s": [
+          0.011270248018263374,
+          0.011478290027298499
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.011763579004764324,
+        "std_s": 0.00014973127371187002,
+        "min_s": 0.011657703005766962,
+        "max_s": 0.011869455003761686,
+        "samples_s": [
+          0.011657703005766962,
+          0.011869455003761686
+        ]
+      },
+      "repetitions": 2,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 2,
+          "step_sat_calls": 15,
+          "step_decisions": 64,
+          "step_propagations": 723,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00577684301242698
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_3x3_ambiguous",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_3x3_ambiguous.json",
+      "grid_size": 3,
+      "description": "Under-constrained 3x3 puzzle: all clues are true, but multiple complete assignments satisfy all clues.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "MULTIPLE",
+      "solution_count": 2,
+      "playability": "STALLED",
+      "expected_steps": 0,
+      "terminal_status": "STALLED",
+      "total_steps": 0,
+      "initial_vars": 9,
+      "initial_prim_vars": 9,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 9,
+      "final_prim_vars": 9,
+      "final_aux_vars": 0,
+      "final_clauses": 2,
+      "total_sat_calls": 17,
+      "dpll_decisions": 0,
+      "dpll_propagations": 17,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 2.983950253110379e-05,
+        "std_s": 1.096723559981721e-06,
+        "min_s": 2.9064001864753664e-05,
+        "max_s": 3.0615003197453916e-05,
+        "samples_s": [
+          3.0615003197453916e-05,
+          2.9064001864753664e-05
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.00014871900202706456,
+        "std_s": 2.705393446614446e-06,
+        "min_s": 0.00014680599997518584,
+        "max_s": 0.00015063200407894328,
+        "samples_s": [
+          0.00015063200407894328,
+          0.00014680599997518584
+        ]
+      },
+      "repetitions": 2,
+      "counters_deterministic": true,
+      "steps_detail": [],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_4x4_progressive",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_4x4_progressive.json",
+      "grid_size": 4,
+      "description": "Progressively solvable 4x4 puzzle without guessing (15 steps). Exercises all 6 templates and both extensions.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 15,
+      "terminal_status": "SOLVED",
+      "total_steps": 15,
+      "initial_vars": 16,
+      "initial_prim_vars": 16,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 60,
+      "final_prim_vars": 16,
+      "final_aux_vars": 44,
+      "final_clauses": 128,
+      "total_sat_calls": 248,
+      "dpll_decisions": 0,
+      "dpll_propagations": 4622,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.020127795469306875,
+        "std_s": 0.00010637496190815501,
+        "min_s": 0.020052577012393158,
+        "max_s": 0.020203013926220592,
+        "samples_s": [
+          0.020203013926220592,
+          0.020052577012393158
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.023595621998538263,
+        "std_s": 0.00015202371344806857,
+        "min_s": 0.023488124999857973,
+        "max_s": 0.023703118997218553,
+        "samples_s": [
+          0.023703118997218553,
+          0.023488124999857973
+        ]
+      },
+      "repetitions": 2,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 31,
+          "step_decisions": 0,
+          "step_propagations": 60,
+          "step_backtracks": 0,
+          "step_runtime_s": 6.980098987696692e-05
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 28,
+          "step_decisions": 0,
+          "step_propagations": 83,
+          "step_backtracks": 0,
+          "step_runtime_s": 9.559698082739487e-05
+        },
+        {
+          "step_number": 3,
+          "target_cell": "D1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D1",
+          "active_clues_count": 3,
+          "step_sat_calls": 27,
+          "step_decisions": 0,
+          "step_propagations": 106,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012830999185098335
+        },
+        {
+          "step_number": 4,
+          "target_cell": "A2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 4,
+          "step_sat_calls": 25,
+          "step_decisions": 0,
+          "step_propagations": 123,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00015011099458206445
+        },
+        {
+          "step_number": 5,
+          "target_cell": "B2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 5,
+          "step_sat_calls": 22,
+          "step_decisions": 0,
+          "step_propagations": 217,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0003812240029219538
+        },
+        {
+          "step_number": 6,
+          "target_cell": "C2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 6,
+          "step_sat_calls": 21,
+          "step_decisions": 0,
+          "step_propagations": 292,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0006165899903862737
+        },
+        {
+          "step_number": 7,
+          "target_cell": "D2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D2",
+          "active_clues_count": 7,
+          "step_sat_calls": 18,
+          "step_decisions": 0,
+          "step_propagations": 553,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0022318059927783906
+        },
+        {
+          "step_number": 8,
+          "target_cell": "A3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 8,
+          "step_sat_calls": 16,
+          "step_decisions": 0,
+          "step_propagations": 511,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001983140995434951
+        },
+        {
+          "step_number": 9,
+          "target_cell": "A4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A4",
+          "active_clues_count": 9,
+          "step_sat_calls": 15,
+          "step_decisions": 0,
+          "step_propagations": 538,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.002430889981042128
+        },
+        {
+          "step_number": 10,
+          "target_cell": "B3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 10,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 479,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0020086940057808533
+        },
+        {
+          "step_number": 11,
+          "target_cell": "B4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B4",
+          "active_clues_count": 11,
+          "step_sat_calls": 10,
+          "step_decisions": 0,
+          "step_propagations": 466,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.002632193012686912
+        },
+        {
+          "step_number": 12,
+          "target_cell": "C3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 12,
+          "step_sat_calls": 8,
+          "step_decisions": 0,
+          "step_propagations": 383,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.002170639992982615
+        },
+        {
+          "step_number": 13,
+          "target_cell": "C4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C4",
+          "active_clues_count": 13,
+          "step_sat_calls": 7,
+          "step_decisions": 0,
+          "step_propagations": 398,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0026694449989008717
+        },
+        {
+          "step_number": 14,
+          "target_cell": "D4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D4",
+          "active_clues_count": 14,
+          "step_sat_calls": 4,
+          "step_decisions": 0,
+          "step_propagations": 235,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0015167849851422943
+        },
+        {
+          "step_number": 15,
+          "target_cell": "D3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D3",
+          "active_clues_count": 15,
+          "step_sat_calls": 3,
+          "step_decisions": 0,
+          "step_propagations": 178,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0011177870110259391
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_4x4_stalled",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_4x4_stalled.json",
+      "grid_size": 4,
+      "description": "Valid 4x4 puzzle with unique complete solution, but progressive deduction stalls with 0 steps.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "STALLED",
+      "expected_steps": 0,
+      "terminal_status": "STALLED",
+      "total_steps": 0,
+      "initial_vars": 32,
+      "initial_prim_vars": 16,
+      "initial_aux_vars": 16,
+      "initial_clauses": 33,
+      "final_vars": 32,
+      "final_prim_vars": 16,
+      "final_aux_vars": 16,
+      "final_clauses": 33,
+      "total_sat_calls": 31,
+      "dpll_decisions": 132,
+      "dpll_propagations": 586,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.002314569519512588,
+        "std_s": 4.757628559038415e-05,
+        "min_s": 0.0022809280053479597,
+        "max_s": 0.0023482110336772166,
+        "samples_s": [
+          0.0023482110336772166,
+          0.0022809280053479597
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.002518829998734873,
+        "std_s": 5.069814155487108e-05,
+        "min_s": 0.002482980999047868,
+        "max_s": 0.0025546789984218776,
+        "samples_s": [
+          0.0025546789984218776,
+          0.002482980999047868
+        ]
+      },
+      "repetitions": 2,
+      "counters_deterministic": true,
+      "steps_detail": [],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_invalid_false_clue",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_invalid_false_clue.json",
+      "grid_size": 3,
+      "description": "Schema-valid puzzle containing a false clue (c_A1 contradicts the hidden solution); rejected by semantic loader validation.",
+      "is_valid_format": false,
+      "clues_truth": false,
+      "uniqueness": "ZERO",
+      "solution_count": 0,
+      "playability": "SKIPPED",
+      "expected_steps": 0,
+      "terminal_status": "INVALID_PUZZLE",
+      "total_steps": 0,
+      "initial_vars": 0,
+      "initial_prim_vars": 0,
+      "initial_aux_vars": 0,
+      "initial_clauses": 0,
+      "final_vars": 0,
+      "final_prim_vars": 0,
+      "final_aux_vars": 0,
+      "final_clauses": 0,
+      "total_sat_calls": 0,
+      "dpll_decisions": 0,
+      "dpll_propagations": 0,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.0,
+        "std_s": 0.0,
+        "min_s": 0.0,
+        "max_s": 0.0,
+        "samples_s": []
+      },
+      "e2e_runtime": {
+        "mean_s": 0.0,
+        "std_s": 0.0,
+        "min_s": 0.0,
+        "max_s": 0.0,
+        "samples_s": []
+      },
+      "repetitions": 0,
+      "counters_deterministic": true,
+      "steps_detail": [],
+      "error_message": "Puzzle validation failed: clue c_A1 for cell A1 (FactClue) evaluates to FALSE under the hidden solution."
+    }
+  ]
+}
