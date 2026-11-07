@@ -76,3 +76,26 @@ pip install pytest pytest-cov typeguard
   pytest
   ```
 
+# Reading clues
+
+Revealed cards display their clues as English sentences directly on the board.
+Click a revealed card to inspect its full clue and highlight the referenced cells.
+Face-down cards show public names and professions; their clues appear only after
+a proven verdict. The same structured level data generates the card and inspector
+text, so no natural-language parsing or duplicate handwritten clues are needed.
+Long clues scroll within the card and inspector without resizing the grid.
+Larger boards can be scrolled horizontally and vertically.
+
+See `docs/implementation-review.md` for the PDF compliance review and remaining work.
+See `docs/references.md` for consulted game/solver sources, usage scope, and
+the instructor's additional six-map and animation requirements.
+
+The GUI Auto Solve button reveals one proven card every 650 ms; click again to
+pause. Restart/Load cancel the current animation. Hint marks the revealed cards
+whose clues, together with known statuses, prove a next verdict. Read highlighted
+clues together: a single highlighted clue need not prove the verdict by itself.
+
+The desktop board uses a warm brown card layout. Click a face-down character
+for the verdict dialog; click a revealed card to read its full clue. The Evidence
+button opens the detailed inspector and deduction history in a separate window.
+

@@ -67,29 +67,29 @@ def test_format_region_and_clue_text(puzzle_3x3_prog):
     """Test human-readable formatting of regions and clues."""
     # Regions
     assert format_region_text(RowRegion(2)) == "Row 2"
-    assert format_region_text(ColRegion("C")) == "Col C"
+    assert format_region_text(ColRegion("C")) == "Column C"
     assert format_region_text(NeighborsRegion(CellId("B2"))) == "Neighbors of B2"
-    assert format_region_text(ExplicitRegion((CellId("A1"), CellId("B2")))) == "{A1, B2}"
+    assert format_region_text(ExplicitRegion((CellId("A1"), CellId("B2")))) == "the cells A1, B2"
     assert format_region_text(CommonNeighborsRegion(CellId("A1"), CellId("C1"))) == "Common neighbors of A1 & C1"
 
     # Clues
     c_fact = FactClue("c1", CellId("A1"), CellId("B1"), Status.INNOCENT, "Bob")
-    assert "Bob (B1) is INNOCENT" in format_clue_text(c_fact)
+    assert "Bob (B1) is innocent." in format_clue_text(c_fact)
 
     c_same = SameClue("c2", CellId("A1"), CellId("B1"), CellId("C1"), "Bob", "Charlie")
-    assert "Bob and Charlie have SAME status" in format_clue_text(c_same)
+    assert "Bob and Charlie have the same status" in format_clue_text(c_same)
 
     c_diff = DifferentClue("c3", CellId("A1"), CellId("B1"), CellId("C1"), "Bob", "Charlie")
-    assert "Bob and Charlie have DIFFERENT status" in format_clue_text(c_diff)
+    assert "Bob and Charlie have different statuses" in format_clue_text(c_diff)
 
     c_ex0 = ExactlyClue("c4", CellId("A1"), 0, RowRegion(1))
-    assert "NO criminals in Row 1" in format_clue_text(c_ex0)
+    assert "There are no criminals in Row 1." in format_clue_text(c_ex0)
 
     c_ex2 = ExactlyClue("c5", CellId("A1"), 2, RowRegion(1))
-    assert "EXACTLY 2 criminal(s) in Row 1" in format_clue_text(c_ex2)
+    assert "Exactly 2 of the people in Row 1 are criminals." in format_clue_text(c_ex2)
 
     c_parity = ParityClue("c6", CellId("A1"), Parity.EVEN, ColRegion("A"))
-    assert "EVEN number of criminals in Col A" in format_clue_text(c_parity)
+    assert "The number of criminals in Column A is even." in format_clue_text(c_parity)
 
 
 def test_app_preserves_public_private_boundary(puzzle_3x3_prog):
@@ -428,6 +428,14 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
         assert app._clues_listbox is not None
         assert app._log_text is not None
 
+        root.update()
+        a1_clue = app._cell_buttons[CellId("A1")]._widgets["clue"]
+        b1_clue = app._cell_buttons[CellId("B1")]._widgets["clue"]
+        assert a1_clue.winfo_ismapped()
+        assert "Bob" in a1_clue.get("1.0", "end-1c")
+        assert not b1_clue.winfo_ismapped()
+        assert b1_clue.get("1.0", "end-1c") == ""
+
         # Select a card
         app.select_cell(CellId("B1"))
         root.update()
@@ -441,6 +449,14 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
         b1_frame = app._cell_buttons[CellId("B1")]
         w = b1_frame._widgets  # type: ignore[attr-defined]
         assert w["badge"].cget("text") == "INNOCENT"
+        assert w["clue"].winfo_ismapped()
+        assert "different statuses" in w["clue"].get("1.0", "end-1c")
+        app.restart()
+        root.update()
+        assert not w["clue"].winfo_ismapped()
+        assert w["clue"].get("1.0", "end-1c") == ""
+        app.select_cell("B1")
+        app.call_innocent()
 
         # Check revealed clues listbox updated
         assert app._clues_listbox.size() >= 2
@@ -451,5 +467,189 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
         app.step()
         root.update()
 
+    finally:
+        root.destroy()
+
+
+@pytest.mark.parametrize("filename", ["puzzle_3x3_progressive.json", "puzzle_4x4_progressive.json"])
+def test_long_clues_do_not_resize_cards(filename, monkeypatch):
+    """Long readable clues stay scrollable without changing board geometry."""
+    import tkinter as tk
+    import griductive.ui.gui as gui
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("No graphical display available")
+    try:
+        app = GriductiveApp(GameController(load_puzzle_from_json(FIXTURES_DIR / filename)), root)
+        root.update()
+        sizes = {cell: (card.winfo_width(), card.winfo_height())
+                 for cell, card in app._cell_buttons.items()}
+        long_text = "A very long clue with many referenced characters. " * 100
+        monkeypatch.setattr(gui, "format_clue_text", lambda *args: long_text)
+        app._refresh_ui()
+        root.update()
+        assert sizes == {cell: (card.winfo_width(), card.winfo_height())
+                         for cell, card in app._cell_buttons.items()}
+        assert max(w for w, h in sizes.values()) - min(w for w, h in sizes.values()) <= 1
+        assert len({h for w, h in sizes.values()}) == 1
+        cell = next(iter(app.controller.public_state.revealed_cells))
+        clue = app._cell_buttons[cell]._widgets["clue"]
+        assert clue.get("1.0", "end-1c") == long_text
+        assert str(clue.cget("state")) == "disabled"
+        clue.yview_moveto(1.0)
+        root.update()
+        assert clue.yview()[0] > 0
+        clue.event_generate("<Button-1>")
+        root.update()
+        assert app.selected_cell == cell
+        assert app.highlighted_cells
+        app.auto_solve()
+        root.update()
+        assert sizes == {cell: (card.winfo_width(), card.winfo_height())
+                         for cell, card in app._cell_buttons.items()}
+        app.restart()
+        root.update()
+        assert sizes == {cell: (card.winfo_width(), card.winfo_height())
+                         for cell, card in app._cell_buttons.items()}
+    finally:
+        root.destroy()
+
+
+class AnimationClock:
+    """Run Tk-style callbacks explicitly, without wall-clock sleeps."""
+    def __init__(self):
+        self.pending = {}
+        self.counter = 0
+
+    def after(self, delay, callback):
+        self.counter += 1
+        key = str(self.counter)
+        self.pending[key] = callback
+        return key
+
+    def after_cancel(self, key):
+        self.pending.pop(key, None)
+
+    def tick(self):
+        key = next(iter(self.pending))
+        self.pending.pop(key)()
+
+
+class AnimationButton:
+    def config(self, **kwargs):
+        self.values = kwargs
+
+
+def animated_app(puzzle):
+    app = GriductiveApp(GameController(puzzle))
+    app.root = AnimationClock()
+    app._auto_button = AnimationButton()
+    app._refresh_ui = lambda: None
+    app._rebuild_board = lambda: None
+    return app
+
+
+def test_animation_reveals_one_card_per_frame_and_finishes(puzzle_3x3_prog):
+    app = animated_app(puzzle_3x3_prog)
+    app.toggle_auto_solve()
+    assert len(app.controller.public_state.revealed_cells) == 1
+    assert app.auto_running
+    for expected in range(2, 10):
+        app.root.tick()
+        assert len(app.controller.public_state.revealed_cells) == expected
+        assert len(app.root.pending) <= 1
+    assert not app.auto_running
+    assert not app.root.pending
+    report = app.last_auto_solve_report
+    assert report.status == AutoSolveStatus.SOLVED
+    assert report.total_steps == 8
+    assert [s.step_number for s in report.steps] == list(range(1, 9))
+    assert report.total_sat_calls == sum(s.step_sat_calls for s in report.steps)
+
+
+@pytest.mark.parametrize("action", ["pause", "restart", "load", "hint", "manual"])
+def test_animation_cancels_pending_and_stale_callbacks(action, puzzle_3x3_prog):
+    app = animated_app(puzzle_3x3_prog)
+    app.toggle_auto_solve()
+    stale_callback = next(iter(app.root.pending.values()))
+    if action == "pause":
+        app.toggle_auto_solve()
+    elif action == "restart":
+        app.restart()
+    elif action == "load":
+        app.load_puzzle(puzzle_3x3_prog)
+    elif action == "hint":
+        app.hint()
+    else:
+        app.select_cell("B1")
+        app.call_innocent()
+    revision = app.controller.revision
+    assert not app.auto_running
+    assert not app.root.pending
+    stale_callback()
+    assert app.controller.revision == revision
+
+
+def test_animation_stalls_without_revealing_unknown(puzzle_3x3_stalled):
+    app = animated_app(puzzle_3x3_stalled)
+    app.toggle_auto_solve()
+    while app.root.pending:
+        app.root.tick()
+    assert not app.auto_running
+    assert not app.controller.is_solved
+    assert app.last_auto_solve_report.status == AutoSolveStatus.STALLED
+    assert app.last_auto_solve_report.total_steps == 1
+
+
+def test_hint_highlights_evidence_owners_without_reveal(puzzle_3x3_prog):
+    app = GriductiveApp(GameController(puzzle_3x3_prog))
+    state = app.controller.public_state
+    hint = app.hint()
+    assert app.hint_clue_cells == frozenset({CellId("A1")})
+    assert app.selected_clue_id in hint.relevant_clue_ids
+    assert "highlighted clue cards" in app.status_message
+    assert app.controller.public_state == state
+    app.restart()
+    assert not app.hint_clue_cells
+
+
+def test_card_dialog_cancel_rejection_and_accepted_flip(puzzle_3x3_prog):
+    """Modal interactions preserve hidden data and route calls through public proof."""
+    import tkinter as tk
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("No graphical display available")
+    try:
+        app = GriductiveApp(GameController(puzzle_3x3_prog), root)
+        root.update()
+        before = app.controller.public_state
+        app._on_card_click(CellId("B1"))
+        root.update()
+        assert app._dialog.winfo_viewable()
+        assert app.controller.public_state == before
+        app._dismiss_dialog()
+        assert app.controller.public_state == before
+        app._on_card_click(CellId("B1"))
+        app._dialog_verdict(Status.CRIMINAL)
+        assert app.last_rejection_reason == RejectionReason.CONTRADICTED
+        assert app.controller.public_state == before
+        app._dismiss_dialog()
+        app._on_card_click(CellId("C1"))
+        app._dialog_verdict(Status.CRIMINAL)
+        assert app.last_rejection_reason == RejectionReason.NOT_PROVABLE
+        assert app.controller.public_state == before
+        app._dismiss_dialog()
+        app._on_card_click(CellId("B1"))
+        app._dialog_verdict(Status.INNOCENT)
+        assert app._dialog is None
+        assert app.controller.public_state.revealed_cells == before.revealed_cells | {CellId("B1")}
+        app._on_card_click(CellId("B1"))
+        assert app.selected_clue_id == "c_B1"
+        app.restart()
+        assert app._dialog is None
+        assert app.controller.public_state == before
     finally:
         root.destroy()

@@ -20,7 +20,6 @@ from griductive.domain.model import (
     SameClue,
     Status,
 )
-from griductive.domain.regions import resolve_region
 from griductive.solver.cnf import (
     AuxAllocator,
     CNFFormula,
@@ -138,14 +137,12 @@ def find_relevant_clue_ids(
     cell: CellId,
     verdict: Verdict,
 ) -> tuple[str, ...]:
-    """Identify which revealed clues are relevant to deducing cell's verdict.
+    """Return a sufficient, deletion-minimal set of public clue IDs.
 
-    Uses a non-destructive single-clue omission test at the CNF level:
-    if omitting a clue from the encoded formula allows the refutation query
-    to become satisfiable (meaning the verdict is no longer forced), that clue
-    is strictly necessary.
-    If no single clue omission changes the verdict, falls back to clues directly
-    referencing the cell or its region.
+    Remove a clue only if the remaining clues plus known statuses still prove
+    the verdict by UNSAT under its opposite. This handles redundant evidence
+    without selecting a clue merely because it mentions the target. Several
+    highlighted clues may be needed together; none is claimed sufficient alone.
     """
     if not state.revealed_clues:
         return ()
@@ -153,8 +150,7 @@ def find_relevant_clue_ids(
     pmap = PrimaryVarMap(state.grid_size)
     var = pmap.cell_to_var(cell)
 
-    # 1. Single-clue omission test
-    necessary: list[str] = []
+    removed: set[str] = set()
     for omitted_clue in state.revealed_clues:
         aux = AuxAllocator(pmap)
         clauses: list[tuple[int, ...]] = []
@@ -162,7 +158,7 @@ def find_relevant_clue_ids(
             clauses.extend(encode_known_status(c, state.known_statuses[c], pmap))
 
         for clue in state.revealed_clues:
-            if clue.clue_id == omitted_clue.clue_id:
+            if clue.clue_id == omitted_clue.clue_id or clue.clue_id in removed:
                 continue
             if isinstance(clue, FactClue):
                 clauses.extend(encode_fact(clue, pmap, aux))
@@ -180,37 +176,11 @@ def find_relevant_clue_ids(
                 clauses.extend(encode_parity(clue, pmap, aux, state.grid_size))
 
         formula = CNFFormula(clauses=tuple(clauses), primary_map=pmap, num_aux=aux.num_aux)
-        if verdict == Verdict.CRIMINAL:
-            res = solve_dpll(formula, assumptions=(-var,))
-            if res.is_sat:
-                necessary.append(omitted_clue.clue_id)
-        elif verdict == Verdict.INNOCENT:
-            res = solve_dpll(formula, assumptions=(var,))
-            if res.is_sat:
-                necessary.append(omitted_clue.clue_id)
+        opposite = -var if verdict == Verdict.CRIMINAL else var
+        if not solve_dpll(formula, assumptions=(opposite,)).is_sat:
+            removed.add(omitted_clue.clue_id)
 
-    if necessary:
-        return tuple(necessary)
-
-    # 2. Structural reference fallback
-    direct: list[str] = []
-    for clue in state.revealed_clues:
-        if isinstance(clue, FactClue) and clue.target == cell:
-            direct.append(clue.clue_id)
-        elif isinstance(clue, (SameClue, DifferentClue)) and (
-            clue.person_a == cell or clue.person_b == cell
-        ):
-            direct.append(clue.clue_id)
-        elif hasattr(clue, "region"):
-            region_cells = resolve_region(clue.region, state.grid_size)  # type: ignore[attr-defined]
-            if cell in region_cells:
-                direct.append(clue.clue_id)
-
-    if direct:
-        return tuple(direct)
-
-    # 3. Default: all active clues
-    return tuple(c.clue_id for c in state.revealed_clues)
+    return tuple(c.clue_id for c in state.revealed_clues if c.clue_id not in removed)
 
 
 class GameController:
