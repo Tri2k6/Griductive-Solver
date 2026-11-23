@@ -29,6 +29,7 @@ from griductive.solver.logic import Verdict
 from griductive.domain.model import (
     CellId,
     Character,
+    Clue,
     FactClue,
     PublicState,
     Puzzle,
@@ -455,15 +456,13 @@ class TestHintRedundantRegionalClues:
         initial_revision = controller.revision
         initial_revealed = set(controller.public_state.revealed_cells)
 
-        # Neither clue is strictly necessary alone (deletion of either leaves the other),
-        # so structural reference fallback is exercised. Must not crash with TypeError!
+        # Redundant evidence must reduce to a sufficient set, not a structural guess.
         hint = controller.hint()
 
         assert hint.has_forced_cell is True
         assert hint.cell == CellId("B1")
         assert hint.verdict == Status.CRIMINAL
-        assert "c_reg1" in hint.relevant_clue_ids
-        assert "c_reg2" in hint.relevant_clue_ids
+        assert hint.relevant_clue_ids == ("c_reg2",)
         # Immutability preserved
         assert controller.revision == initial_revision
         assert set(controller.public_state.revealed_cells) == initial_revealed
@@ -651,3 +650,32 @@ class TestArchitectureIsolation:
                     assert not any(f in node.module for f in forbidden), (
                         f"Forbidden 'from' import in controller.py: {node.module}"
                     )
+
+
+def test_hint_evidence_is_sufficient_under_independent_semantics():
+    """Displayed clues prove each hinted verdict without consulting hidden answers."""
+    from itertools import product
+    from griductive.domain.semantics import evaluate_clue
+
+    controller = GameController(load_puzzle_from_json("puzzles/puzzle_3x3_progressive.json"))
+    while not controller.is_solved:
+        state = controller.public_state
+        hint = controller.hint()
+        assert hint.has_forced_cell
+        assert controller.public_state == state
+        evidence = [c for c in state.revealed_clues if c.clue_id in hint.relevant_clue_ids]
+        unknown = [c.cell for c in state.characters if c.cell not in state.known_statuses]
+        assignments = []
+        for statuses in product((Status.CRIMINAL, Status.INNOCENT), repeat=len(unknown)):
+            assignment = dict(state.known_statuses)
+            assignment.update(zip(unknown, statuses))
+            assignments.append(assignment)
+        models = [a for a in assignments if all(evaluate_clue(c, a, state.grid_size) for c in evidence)]
+        assert models
+        assert all(a[hint.cell] == hint.verdict for a in models)
+        for omitted in evidence:
+            reduced = [c for c in evidence if c != omitted]
+            assert any(a[hint.cell] != hint.verdict and
+                       all(evaluate_clue(c, a, state.grid_size) for c in reduced)
+                       for a in assignments)
+        assert controller.make_call(hint.cell, hint.verdict).accepted

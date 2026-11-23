@@ -18,6 +18,12 @@ The official specification is `docs/assignment.pdf`. Read the relevant pages bef
 - Keep the main algorithms in project Python code. Supporting libraries for GUI, file handling, and testing are permitted by the PDF; SAT solving, entailment, and core encoding must be implemented here.
 - Keep dependencies modest and document them in the eventual `requirements.txt` and README. Do not introduce a framework solely for module wiring or abstractions without a concrete need.
 
+## GUI copy and typography
+
+- Keep command labels in Title Case. Use **Auto Solve**, **Logs**, and **Check Board** across buttons, dialogs and related messages. Use sentence case for instructions and feedback.
+- Use Atkinson Hyperlegible for reading text on cards, in the status bar, and in Logs. Use a monospace font for timestamps.
+- Format solver outcomes in the GUI from typed data. Check one-step and multi-step wording and keep raw codes such as `SAT`, `UNSAT`, `NOT_PROVABLE`, and `CONTRADICTED` in Logs or explicit verdict details. Explain the outcome and next action on the board.
+
 ## Architectural rules
 
 - **Private engine:** `GameEngine` owns the complete solution and all unrevealed clues. Only it (and explicit offline validation tooling) may read them. It publishes a `PublicState` containing visible character metadata, initial face-up statuses/clues, and accepted verdicts/revealed clues. Rejected calls do not mutate it.

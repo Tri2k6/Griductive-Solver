@@ -56,6 +56,10 @@ pip install pytest pytest-cov typeguard
   python src/main.py gui --puzzle puzzles/puzzle_3x3_progressive.json
   ```
 
+  Ô nhân vật dùng Atkinson Hyperlegible. Trên Windows, GUI tự nạp font đi kèm.
+  Trên macOS hoặc Linux, cài hai tệp `.ttf` trong thư mục font đi kèm rồi mở
+  lại GUI để hiện đúng kiểu chữ. [Atkinson Hyperlegible và giấy phép](https://github.com/google/fonts/tree/main/ofl/atkinsonhyperlegible)
+
 - **Kiểm định file puzzle (Validation):**
   ```bash
   python src/main.py validate puzzles/puzzle_3x3_progressive.json
@@ -75,4 +79,41 @@ pip install pytest pytest-cov typeguard
   ```bash
   pytest
   ```
+
+# Reading clues
+
+Revealed cards display their clues as English sentences directly on the board.
+Click a revealed card to inspect its full clue and highlight the referenced cells.
+Face-down cards show public names and professions; their clues appear only after
+a proven verdict. The same structured level data generates the card and inspector
+text, so no natural-language parsing or duplicate handwritten clues are needed.
+Long clues scroll within the card and inspector without resizing the grid.
+Larger boards can be scrolled horizontally and vertically.
+
+See `docs/implementation-review.md` for the PDF compliance review and remaining work.
+See `docs/references.md` for consulted game/solver sources, usage scope, and
+the instructor's additional six-map and animation requirements.
+
+The GUI Auto Solve button reveals one proven card every 650 ms; click again to
+pause. Restart/Load cancel the current animation. Hint marks the revealed cards
+whose clues, together with known statuses, prove a next verdict. Read highlighted
+clues together: a single highlighted clue need not prove the verdict by itself.
+
+Click a face-down character for the verdict dialog, or click a revealed card
+to read its full clue. **Logs** opens the deduction history. Use the **SAT**
+and **Deductions** filters to inspect proof queries and outcomes. The status
+bar and Logs use Atkinson Hyperlegible for reading text.
+Hovering over a character lifts its border without moving the grid. **Reduce
+Hover Motion** keeps the highlight and skips the movement.
+
+**Puzzles** lists puzzle JSON files in the bundled folder. Use **Change
+Folder** for other collections. **Settings** adjusts the interval between card
+reveals. **Check Board** verifies whether the current public clues leave no
+forced move (`STALLED`) or admit no consistent assignment (`INCONSISTENT`).
+The first result describes the current revealed state. Full-puzzle uniqueness
+is checked separately by the validation command.
+
+The bundled `puzzle_3x3_public_conflict.json` is a GUI diagnostic case. Its
+initial public clues conflict. The standard loader and validation CLI continue
+to reject false-clue puzzles.
 
