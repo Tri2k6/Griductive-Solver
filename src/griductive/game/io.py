@@ -339,12 +339,15 @@ def _parse_clue(
     raise ValueError(f"Unknown clue type {clue_type!r} in clue {clue_id} for cell {owner}")
 
 
-def load_puzzle_from_dict(data: dict[str, Any]) -> Puzzle:
+def load_puzzle_from_dict(
+    data: dict[str, Any], *, allow_public_conflict: bool = False
+) -> Puzzle:
     """Parse, validate, and construct a private Puzzle from a dictionary.
 
     Validates schema structure, grid coverage, uniqueness of names and coordinates,
     region resolution, cardinality bounds, initial face-up cards, and semantic truth
-    under the ground truth solution.
+    under the ground truth solution. The GUI can opt into diagnostic boards
+    only when their initial public knowledge base is already unsatisfiable.
     """
     if not isinstance(data, dict):
         raise TypeError(f"Puzzle data must be a dictionary, got {type(data).__name__}")
@@ -486,24 +489,33 @@ def load_puzzle_from_dict(data: dict[str, Any]) -> Puzzle:
     if len(set(initial_face_up_cells)) != len(initial_face_up_cells):
         raise ValueError(f"'initial_face_up' contains duplicate cells: {initial_face_up_cells}")
 
-    # Offline truth validation: every clue must evaluate to True under the solution!
-    for cell, clue in clues.items():
-        if not evaluate_clue(clue, solution, grid_size):
-            raise ValueError(
-                f"Puzzle validation failed: clue {clue.clue_id} for cell {cell} ({clue.__class__.__name__}) "
-                f"evaluates to FALSE under the hidden solution."
-            )
-
-    return Puzzle(
+    puzzle = Puzzle(
         grid_size=grid_size,
         characters=tuple(characters),
         solution=solution,
         clues=clues,
         initial_face_up=frozenset(initial_face_up_cells),
     )
+    for cell, clue in clues.items():
+        if not evaluate_clue(clue, solution, grid_size):
+            if allow_public_conflict:
+                from griductive.game.engine import GameEngine
+                from griductive.solver.dpll import solve_dpll
+                from griductive.solver.kb import build_knowledge_base
+
+                kb = build_knowledge_base(GameEngine(puzzle).public_state)
+                if not solve_dpll(kb.formula).is_sat:
+                    return puzzle
+            raise ValueError(
+                f"Puzzle validation failed: clue {clue.clue_id} for cell {cell} ({clue.__class__.__name__}) "
+                f"evaluates to FALSE under the hidden solution."
+            )
+    return puzzle
 
 
-def load_puzzle_from_json(path_or_json: str | Path) -> Puzzle:
+def load_puzzle_from_json(
+    path_or_json: str | Path, *, allow_public_conflict: bool = False
+) -> Puzzle:
     """Load a Puzzle from a JSON file path or a raw JSON string."""
     if isinstance(path_or_json, Path):
         content = path_or_json.read_text(encoding="utf-8")
@@ -523,7 +535,7 @@ def load_puzzle_from_json(path_or_json: str | Path) -> Puzzle:
     else:
         raise TypeError(f"Expected str or Path, got {type(path_or_json).__name__}")
 
-    return load_puzzle_from_dict(data)
+    return load_puzzle_from_dict(data, allow_public_conflict=allow_public_conflict)
 
 
 def validate_puzzle_data(data: dict[str, Any]) -> None:

@@ -231,6 +231,10 @@ class GameController:
         """Grid dimension N."""
         return self._engine.grid_size
 
+    def assess_board(self) -> ProofReport:
+        """Check consistency and available moves without revealing a card."""
+        return ProofService.classify_state(self.public_state)
+
     def restart(self) -> PublicState:
         """Reset the game back to its initial face-up state."""
         return self._engine.restart()
@@ -465,6 +469,14 @@ class GameController:
         card in row-major order and rebuilds public KB after each reveal.
         """
         if self.is_solved:
+            proof = self.assess_board()
+            if not proof.base_consistent:
+                return AutoSolveReport(
+                    AutoSolveStatus.INCONSISTENT, (), 0, proof.total_sat_calls,
+                    proof.aggregate_metrics, self.public_state,
+                    "Deduction halted: public knowledge base is inconsistent.",
+                    proof.total_sat_calls, proof.aggregate_metrics,
+                )
             return AutoSolveReport(
                 status=AutoSolveStatus.ALREADY_SOLVED,
                 steps=(),
@@ -643,7 +655,7 @@ class GameController:
                         runtime=total_runtime,
                     ),
                     final_public_state=self.public_state,
-                    message=f"Puzzle solved successfully in {len(steps)} steps without guessing.",
+                    message=f"Puzzle solved in {step_counter} {'step' if step_counter == 1 else 'steps'} without guessing.",
                     terminal_sat_calls=0,
                     terminal_metrics=DpllMetrics(0, 0, 0, 0.0),
                 )

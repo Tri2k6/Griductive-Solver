@@ -194,7 +194,7 @@ def test_manual_call_without_selection(puzzle_3x3_prog):
     res = app.call_criminal()
     assert res.accepted is False
     assert res.rejection_reason == RejectionReason.INVALID_CELL
-    assert "No cell selected" in app.status_message
+    assert app.status_message == "Select a card first."
 
 
 def test_manual_call_accepted_reveals_card_and_clue(puzzle_3x3_prog):
@@ -218,7 +218,7 @@ def test_manual_call_accepted_reveals_card_and_clue(puzzle_3x3_prog):
     assert b1_data.status == Status.INNOCENT
     assert b1_data.clue is not None
     assert b1_data.clue.clue_id == "c_B1"
-    assert "ACCEPTED" in app.status_message
+    assert app.status_message == "B1 is innocent. New clue revealed."
     assert app.last_rejection_reason is None
 
 
@@ -242,7 +242,8 @@ def test_manual_call_rejected_not_provable(puzzle_3x3_prog):
     c2_data = app.get_cell_view_data(CellId("C2"))
     assert c2_data.is_revealed is False
     assert c2_data.status is None
-    assert "NOT_PROVABLE" in app.status_message
+    assert app.status_message == "Not enough evidence yet."
+    assert any("NOT_PROVABLE" in entry for entry in app.trace_log)
 
 
 def test_manual_call_rejected_contradicted(puzzle_3x3_prog):
@@ -264,7 +265,8 @@ def test_manual_call_rejected_contradicted(puzzle_3x3_prog):
     # Card remains unrevealed
     b1_data = app.get_cell_view_data(CellId("B1"))
     assert b1_data.is_revealed is False
-    assert "CONTRADICTED" in app.status_message
+    assert app.status_message == "The clues prove the opposite verdict."
+    assert any("CONTRADICTED" in entry for entry in app.trace_log)
 
 
 def test_hint_functionality(puzzle_3x3_prog, puzzle_3x3_stalled):
@@ -278,8 +280,8 @@ def test_hint_functionality(puzzle_3x3_prog, puzzle_3x3_stalled):
     assert h.cell == CellId("B1")
     assert h.verdict == Status.INNOCENT
     assert "c_A1" in h.relevant_clue_ids
-    assert app_prog.hinted_cell == CellId("B1")
-    assert app_prog.selected_cell == CellId("B1")
+    assert app_prog.hinted_cell is None
+    assert app_prog.selected_cell is None
 
     # State must NOT be mutated by Hint!
     assert app_prog.controller.revision == rev_before
@@ -305,7 +307,7 @@ def test_hint_clears_stale_visual_state(puzzle_3x3_prog):
     app = GriductiveApp(GameController(puzzle_3x3_prog))
     first_hint = app.hint()
     assert first_hint.has_forced_cell
-    assert app.highlighted_cells
+    assert app.hint_clue_cells
 
     app.auto_solve()
     no_hint = app.hint()
@@ -333,7 +335,7 @@ def test_step_and_auto_solve(puzzle_3x3_prog):
     assert rep.status == AutoSolveStatus.SOLVED
     assert rep.total_steps == 7  # 1 previous + 7 remaining = 8 total
     assert app.controller.is_solved is True
-    assert "SOLVED" in app.status_message
+    assert app.status_message == "Auto Solve · Solved in 7 steps."
 
 
 def test_restart_resets_board_and_selections(puzzle_3x3_prog):
@@ -351,7 +353,7 @@ def test_restart_resets_board_and_selections(puzzle_3x3_prog):
     assert app.hinted_cell is None
     assert len(app.highlighted_cells) == 0
     assert app.last_rejection_reason is None
-    assert app.trace_log == ["Puzzle restarted to initial face-up cards."]
+    assert app.trace_log == ["Puzzle restarted."]
 
 
 def test_load_puzzle_transitions_dimensions(puzzle_3x3_prog, puzzle_4x4_prog):
@@ -366,7 +368,7 @@ def test_load_puzzle_transitions_dimensions(puzzle_3x3_prog, puzzle_4x4_prog):
     grid = app.get_board_grid()
     assert len(grid) == 4
     assert len(grid[0]) == 4
-    assert app.trace_log == ["Loaded puzzle (4×4) successfully."]
+    assert app.trace_log == ["Puzzle loaded. Select a card to begin."]
 
 
 def test_step_reports_inconsistent_public_kb() -> None:
@@ -398,8 +400,7 @@ def test_step_reports_inconsistent_public_kb() -> None:
     assert result is None
     assert app.last_auto_solve_report is not None
     assert app.last_auto_solve_report.status == AutoSolveStatus.INCONSISTENT
-    assert "INCONSISTENT" in app.status_message
-    assert "STALLED" not in app.status_message
+    assert app.status_message == "The revealed clues conflict."
     assert app.controller.revision == revision_before
     assert app.controller.public_state.revealed_cells == revealed_before
 
@@ -427,6 +428,9 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
         assert app._status_label is not None
         assert app._clues_listbox is not None
         assert app._log_text is not None
+        assert app._logs_window.title() == "Logs · Griductive"
+        for widget in (app._board_status, app._log_text):
+            assert root.tk.splitlist(widget.cget("font"))[0] == "Atkinson Hyperlegible"
 
         root.update()
         a1_clue = app._cell_buttons[CellId("A1")]._widgets["clue"]
@@ -448,7 +452,7 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
         # Check B1 widget updated
         b1_frame = app._cell_buttons[CellId("B1")]
         w = b1_frame._widgets  # type: ignore[attr-defined]
-        assert w["badge"].cget("text") == "INNOCENT"
+        assert w["badge"].cget("text") == "Innocent"
         assert w["clue"].winfo_ismapped()
         assert "different statuses" in w["clue"].get("1.0", "end-1c")
         app.restart()
@@ -569,6 +573,22 @@ def test_animation_reveals_one_card_per_frame_and_finishes(puzzle_3x3_prog):
     assert report.total_sat_calls == sum(s.step_sat_calls for s in report.steps)
 
 
+
+@pytest.mark.parametrize("animate", [False, True])
+def test_auto_solve_describes_one_remaining_step_without_status_code(puzzle_3x3_prog, animate):
+    app = animated_app(puzzle_3x3_prog)
+    assert app.controller.auto_solve(max_steps=7).total_steps == 7
+    if animate:
+        app.toggle_auto_solve()
+        app.root.tick()
+    else:
+        app.auto_solve()
+
+    assert app.last_auto_solve_report.status == AutoSolveStatus.SOLVED
+    assert app.status_message == "Auto Solve · Solved in 1 step."
+    assert any("Active Clues" in entry for entry in app.trace_log)
+
+
 @pytest.mark.parametrize("action", ["pause", "restart", "load", "hint", "manual"])
 def test_animation_cancels_pending_and_stale_callbacks(action, puzzle_3x3_prog):
     app = animated_app(puzzle_3x3_prog)
@@ -606,13 +626,23 @@ def test_animation_stalls_without_revealing_unknown(puzzle_3x3_stalled):
 def test_hint_highlights_evidence_owners_without_reveal(puzzle_3x3_prog):
     app = GriductiveApp(GameController(puzzle_3x3_prog))
     state = app.controller.public_state
-    hint = app.hint()
+    app._advance_hint()
     assert app.hint_clue_cells == frozenset({CellId("A1")})
-    assert app.selected_clue_id in hint.relevant_clue_ids
-    assert "highlighted clue cards" in app.status_message
+    assert not app._is_dimmed(CellId("A1"))
+    assert app._is_dimmed(CellId("B1"))
+    assert "B1" not in app.status_message
+    app._advance_hint()
+    assert app.hinted_cell == CellId("B1")
+    assert not app._is_dimmed(CellId("B1"))
+    assert app._is_dimmed(CellId("C1"))
+    assert app.hint_clue_cells == frozenset({CellId("A1")})
+    assert "B1" in app.status_message
+    assert "INNOCENT" not in app.status_message
+    app._advance_hint()
     assert app.controller.public_state == state
-    app.restart()
     assert not app.hint_clue_cells
+    assert app.hinted_cell is None
+    assert not app._is_dimmed(CellId("C1"))
 
 
 def test_card_dialog_cancel_rejection_and_accepted_flip(puzzle_3x3_prog):
@@ -651,5 +681,176 @@ def test_card_dialog_cancel_rejection_and_accepted_flip(puzzle_3x3_prog):
         app.restart()
         assert app._dialog is None
         assert app.controller.public_state == before
+    finally:
+        root.destroy()
+
+
+
+def test_public_board_claim_and_agent_stop(puzzle_3x3_prog):
+    app = GriductiveApp(GameController(puzzle_3x3_prog))
+    assert app.check_board(AutoSolveStatus.STALLED) is None
+    assert "Claim not supported" in app.status_message
+
+    app.load_puzzle(FIXTURES_DIR / "puzzle_3x3_ambiguous.json")
+    before = app.controller.public_state
+    assert app.check_board(AutoSolveStatus.STALLED) == AutoSolveStatus.STALLED
+    assert app.auto_solve().status == AutoSolveStatus.STALLED
+    assert app.controller.public_state == before
+
+    conflict = FIXTURES_DIR / "puzzle_3x3_public_conflict.json"
+    with pytest.raises(ValueError):
+        load_puzzle_from_json(conflict)
+    with pytest.raises(ValueError):
+        load_puzzle_from_json(FIXTURES_DIR / "puzzle_invalid_false_clue.json",
+                              allow_public_conflict=True)
+    app.load_puzzle(conflict)
+    before = app.controller.public_state
+    assert not app.hint().base_consistent
+    assert app.status_message == "The revealed clues conflict."
+    assert app.check_board(AutoSolveStatus.INCONSISTENT) == AutoSolveStatus.INCONSISTENT
+    assert app.auto_solve().status == AutoSolveStatus.INCONSISTENT
+    assert app.controller.public_state == before
+
+
+def test_board_selection_does_not_resize_rows_and_picker_lists_puzzles(puzzle_3x3_prog):
+    import tkinter as tk
+    from tkinter import ttk
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("No graphical display available")
+    try:
+        app = GriductiveApp(GameController(puzzle_3x3_prog), root)
+        root.update()
+        assert app._cell_buttons[CellId("B1")]._widgets["name"].cget("text") == "Bob"
+        assert app._cell_buttons[CellId("B1")]._widgets["prof"].cget("text") == "Chef"
+        before = [card.winfo_geometry() for card in app._cell_buttons.values()]
+        for cell in ("A1", "B2", "C3"):
+            app._on_card_click(CellId(cell))
+            root.update()
+            assert [card.winfo_geometry() for card in app._cell_buttons.values()] == before
+            app._dismiss_dialog()
+
+        def descendants(widget):
+            for child in widget.winfo_children():
+                yield child
+                yield from descendants(child)
+
+        app._on_load_button()
+        table = next(w for w in descendants(app._dialog) if isinstance(w, ttk.Treeview))
+        entries = {table.item(row, "text"): row for row in table.get_children()}
+        assert "manifest" not in entries
+        table.selection_set(entries["puzzle 4x4 progressive"])
+        play = next(w for w in descendants(app._dialog)
+                    if isinstance(w, ttk.Button) and w.cget("text") == "Play Selected")
+        play.invoke()
+        assert app.controller.grid_size == 4
+
+        app.check_board()
+        app._log_tabs["SAT"].invoke()
+        assert "Public Clues: SAT" in app._log_text.get("1.0", "end-1c")
+        app._log_tabs["Deductions"].invoke()
+        assert "A provable move remains." in app._log_text.get("1.0", "end-1c")
+        app._show_settings()
+        scale = next(w for w in descendants(app._dialog) if isinstance(w, tk.Scale))
+        scale.set(900)
+        save = next(w for w in descendants(app._dialog)
+                    if isinstance(w, ttk.Button) and w.cget("text") == "Save Settings")
+        save.invoke()
+        assert app.animation_delay_ms == 900
+        toolbar = app._auto_button.master
+        buttons = toolbar.winfo_children()
+        assert [button.cget("text") for button in buttons] == ["Hint", "Auto Solve", "Check Board"]
+        for width in (950, 435, 950):
+            root.geometry(f"{app._px(width)}x{app._px(580)}")
+            root.update()
+            assert len({button.winfo_y() for button in buttons}) == 1
+            for button in buttons:
+                assert button.winfo_ismapped()
+                assert button.winfo_x() + button.winfo_width() <= toolbar.winfo_width()
+                assert button.winfo_width() >= button.winfo_reqwidth()
+
+        hint = buttons[0]
+        hint.focus_force()
+        root.update()
+        hint.event_generate("<KeyRelease-Return>")
+        assert hint.cget("text") == "Reveal"
+        app._on_card_click(min(app.hint_clue_cells))
+        app._dismiss_dialog()
+        assert hint.cget("text") == "Reveal"
+        app._advance_hint()
+        assert hint.cget("text") == "Clear"
+        app._advance_hint()
+        assert hint.cget("text") == "Hint"
+        slots = [button.winfo_geometry() for button in buttons]
+        resting = hint._art.coords(hint._face)
+        hint.event_generate("<Enter>")
+        assert hint._timer is not None
+        assert hint._amount < 1
+        hint._ease_to(0.0)
+        app.reduced_motion = True
+        hint._ease_to(1.0)
+        root.update()
+        assert hint._timer is None
+        assert hint._art.coords(hint._face) == resting
+        assert hint._art.itemcget(hint._face, "fill") == hint._hover
+        assert [button.winfo_geometry() for button in buttons] == slots
+    finally:
+        root.destroy()
+
+
+def test_character_hover_tracks_child_widgets_and_respects_spotlight(puzzle_3x3_prog):
+    import tkinter as tk
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        pytest.skip("No graphical display available")
+    try:
+        app = GriductiveApp(GameController(puzzle_3x3_prog), root)
+        root.update()
+        card = app._cell_buttons[CellId("B1")]
+        portrait = card._widgets["canvas"]
+        name = card._widgets["name"]
+        positions = [widget.winfo_geometry() for widget in app._cell_buttons.values()]
+
+        def outline():
+            item, = card._surface.find_all()
+            return card._surface.itemcget(item, "outline"), card._surface.coords(item)
+
+        def finish_animation():
+            finished = tk.BooleanVar(master=root)
+            root.after(200, lambda: finished.set(True))
+            root.wait_variable(finished)
+
+        resting = outline()
+        portrait.event_generate("<Enter>")
+        assert card._hover_timer is not None
+        finish_animation()
+        assert outline()[0] != resting[0]
+        assert outline()[1] != resting[1]
+
+        portrait.event_generate("<Leave>", rootx=name.winfo_rootx() + 2,
+                                rooty=name.winfo_rooty() + 2)
+        name.event_generate("<Enter>")
+        assert card._hover_timer is None
+        assert card._hover_amount == 1.0
+
+        app.hint()
+        assert card._hover_amount == 0.0
+        muted = outline()
+        name.event_generate("<Enter>")
+        assert outline() == muted
+
+        app.reduced_motion = True
+        app.clear_highlights()
+        assert card._hover_timer is None
+        assert outline()[0] != resting[0]
+        assert outline()[1] == resting[1]
+        name.event_generate("<Leave>", rootx=card.winfo_rootx() - 1,
+                            rooty=card.winfo_rooty())
+        assert outline() == resting
+        assert [widget.winfo_geometry() for widget in app._cell_buttons.values()] == positions
     finally:
         root.destroy()

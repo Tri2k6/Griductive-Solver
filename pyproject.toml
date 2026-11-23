@@ -2,3 +2,6 @@
 pythonpath = ["src"]
 testpaths = ["tests"]
 
+[tool.setuptools.package-data]
+"griductive.ui" = ["assets/atkinson-hyperlegible/*.ttf", "assets/atkinson-hyperlegible/OFL.txt"]
+

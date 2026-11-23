@@ -69,6 +69,68 @@ và phần đã tham khảo. Nếu sau này lấy code/asset, bổ sung file, co
 phần thay đổi, giấy phép và thông báo bản quyền tương ứng. Không ghi các ý tưởng
 mới đề xuất ở đây thành tính năng đã hoàn thành.
 
+## Nguồn cho lần chỉnh UI responsive
+
+Tra cứu ngày 23/11/2026. Chọn [Anthropic Frontend Design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
+để lên hệ chữ, bảng màu, bố cục và kiểm tra ảnh chụp ở nhiều kích thước.
+Đã cân nhắc [Stitch DESIGN.md](https://github.com/google-labs-code/stitch-skills/blob/main/plugins/stitch-utilities/skills/design-md/SKILL.md),
+vốn dành cho quy trình thiết kế trong Stitch. Áp dụng hướng dẫn Anthropic trực
+tiếp vào Tkinter, không tích hợp mã hoặc công cụ Stitch vào ứng dụng.
+
+Ảnh thứ hai trong yêu cầu ngày 23/11/2026 là ảnh chụp
+[Griductive trên Knotwise Games](https://knotwise.games/games/griductive).
+Tham khảo tỷ lệ thẻ, cách đặt hướng dẫn cạnh board và nhóm nút gần board.
+Dự án dùng bảng màu than xanh và vàng, portrait vẽ bằng code của dự án, cùng
+bố cục điều khiển riêng cho Hint, solver và Evidence.
+
+Tham khảo [Microsoft Learn về DPI awareness](https://learn.microsoft.com/en-us/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process)
+để thiết lập DPI trước khi tạo cửa sổ Tk trên Windows. Kích thước GUI dựa trên
+DPI lúc mở ứng dụng.
+
+Trong lượt tinh chỉnh tương tác, áp dụng phần motion của cùng skill cho phản
+hồi hover/nhấn và giữ viền focus bàn phím. Nút dùng Segoe UI Semibold, ký hiệu
+Unicode và mặt bo góc vẽ bằng Canvas. Hiệu ứng hover và tùy chọn giảm chuyển
+động được cài đặt trong Tkinter của dự án. Ảnh Knotwise là tham chiếu về viền
+và cách đặt icon bên cạnh nhãn.
+
+### Spotlight và phân nhóm điều khiển
+
+Đọc lại phần [How to Play và Features của Griductive trên Reddit for Developers](https://developers.reddit.com/apps/griductive)
+để đối chiếu hai cấp hint: đưa người chơi đến clue làm căn cứ, rồi chỉ ô mục
+tiêu. Hai ảnh Knotwise người dùng cung cấp cho thấy cách giảm sáng các thẻ
+khác và đưa nút qua chuỗi Hint, Reveal, Clear. Dự án dùng hai viền liền khác
+màu để phân biệt chứng cứ và mục tiêu. Reveal chỉ chỉ ra nhân vật cần xét;
+việc công bố verdict và lật thẻ vẫn đi qua kiểm tra SAT.
+
+Áp dụng [Anthropic Frontend Design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
+cho thứ bậc chữ và ưu tiên thao tác. Georgia dùng cho tiêu đề, Trebuchet MS
+dùng cho tên và nút, Consolas dùng cho nghề nghiệp. Icon có cỡ và khoảng
+cách riêng. Hint, Auto Solve và Check board nằm cạnh board. Puzzles, Restart,
+Settings và Solver log nằm ở nhóm quản lý. Solver log giữ truy vấn SAT và
+trace để đọc chi tiết khi cần.
+
+Kiểu chữ trên thẻ sau đó được đổi sang **Atkinson Hyperlegible** theo yêu cầu
+của người dùng. Dự án phân phối bản Regular và Bold cùng `OFL.txt`, lấy từ
+[kho Google Fonts](https://github.com/google/fonts/tree/main/ofl/atkinsonhyperlegible).
+Trên Windows, ứng dụng nạp hai tệp font riêng cho tiến trình theo tài liệu
+[Microsoft Learn về AddFontResourceExW](https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-addfontresourceexw).
+
+### Rà soát chữ và thuật ngữ trong GUI
+
+Đối chiếu phần microcopy của [Anthropic Frontend Design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md),
+hướng dẫn chơi của [Knotwise Griductive](https://knotwise.games/games/griductive)
+và [Griductive trên Reddit for Developers](https://developers.reddit.com/apps/griductive).
+Tên thao tác viết Title Case và dùng lại xuyên suốt. Câu báo kết quả viết
+ngắn, dùng từ người chơi hiểu và phân biệt rõ hai lý do từ chối verdict.
+Giao diện dùng **Auto Solve** cho thao tác, **Logs** cho lịch sử và
+**Check Board** cho kiểm tra trạng thái. Thanh trạng thái và phần chữ trong
+Logs dùng Atkinson Hyperlegible. Font monospace dành cho mốc thời gian.
+Các quy ước này cũng được ghi trong `AGENTS.md`.
+
+Trong lần audit vai trò các nút, tham khảo thêm [Griductive Dev Log #1](https://www.reddit.com/r/Griductive/comments/1rkh1dw/griductive_dev_log_1_bug_fixes_logic_tree_and/)
+về Logic Tree và [Griductive Archive](https://knotwise.games/games/griductive/archive)
+về cách chọn màn. Hai nguồn này được dùng để đối chiếu vai trò của Logs và Puzzles.
+
 Mẫu mô tả chính xác cho lần nghiên cứu này:
 
 > Nhóm tham khảo hướng dẫn công khai của Clues by Sam và Griductive để thiết kế

@@ -56,6 +56,10 @@ pip install pytest pytest-cov typeguard
   python src/main.py gui --puzzle puzzles/puzzle_3x3_progressive.json
   ```
 
+  Ô nhân vật dùng Atkinson Hyperlegible. Trên Windows, GUI tự nạp font đi kèm.
+  Trên macOS hoặc Linux, cài hai tệp `.ttf` trong thư mục font đi kèm rồi mở
+  lại GUI để hiện đúng kiểu chữ. [Atkinson Hyperlegible và giấy phép](https://github.com/google/fonts/tree/main/ofl/atkinsonhyperlegible)
+
 - **Kiểm định file puzzle (Validation):**
   ```bash
   python src/main.py validate puzzles/puzzle_3x3_progressive.json
@@ -95,7 +99,21 @@ pause. Restart/Load cancel the current animation. Hint marks the revealed cards
 whose clues, together with known statuses, prove a next verdict. Read highlighted
 clues together: a single highlighted clue need not prove the verdict by itself.
 
-The desktop board uses a warm brown card layout. Click a face-down character
-for the verdict dialog; click a revealed card to read its full clue. The Evidence
-button opens the detailed inspector and deduction history in a separate window.
+Click a face-down character for the verdict dialog, or click a revealed card
+to read its full clue. **Logs** opens the deduction history. Use the **SAT**
+and **Deductions** filters to inspect proof queries and outcomes. The status
+bar and Logs use Atkinson Hyperlegible for reading text.
+Hovering over a character lifts its border without moving the grid. **Reduce
+Hover Motion** keeps the highlight and skips the movement.
+
+**Puzzles** lists puzzle JSON files in the bundled folder. Use **Change
+Folder** for other collections. **Settings** adjusts the interval between card
+reveals. **Check Board** verifies whether the current public clues leave no
+forced move (`STALLED`) or admit no consistent assignment (`INCONSISTENT`).
+The first result describes the current revealed state. Full-puzzle uniqueness
+is checked separately by the validation command.
+
+The bundled `puzzle_3x3_public_conflict.json` is a GUI diagnostic case. Its
+initial public clues conflict. The standard loader and validation CLI continue
+to reject false-clue puzzles.
 
