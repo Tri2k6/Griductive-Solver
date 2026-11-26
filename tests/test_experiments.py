@@ -157,7 +157,7 @@ def test_full_suite_run_and_exports(tmp_path):
     suite = runner.run_suite(repetitions=2)
 
     assert isinstance(suite, ExperimentSuiteReport)
-    assert len(suite.results) == 6
+    assert len(suite.results) == 10
     assert suite.platform_info.get("python_version") is not None
     assert suite.settings.get("repetitions") == 2
 
@@ -175,7 +175,7 @@ def test_full_suite_run_and_exports(tmp_path):
     # 1. Validate CSV
     with csv_file.open(encoding="utf-8") as f:
         reader = list(csv.DictReader(f))
-        assert len(reader) == 6
+        assert len(reader) == 10
         p3_prog = next(r for r in reader if r["puzzle_id"] == "puzzle_3x3_progressive")
         assert p3_prog["terminal_status"] == "SOLVED"
         assert p3_prog["steps_taken"] == "8"
@@ -187,7 +187,7 @@ def test_full_suite_run_and_exports(tmp_path):
     with json_file.open(encoding="utf-8") as f:
         data = json.load(f)
         assert data["manifest_file"] == str(MANIFEST_PATH)
-        assert len(data["results"]) == 6
+        assert len(data["results"]) == 10
         r0 = data["results"][0]
         assert r0["puzzle_id"] == "puzzle_3x3_progressive"
         assert "steps_detail" in r0

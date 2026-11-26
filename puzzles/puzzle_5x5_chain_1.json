@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "grid_size": 5,
+  "characters": [
+    {
+      "cell": "A1",
+      "name": "Ada",
+      "profession": "Carpenter",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "FACT",
+        "target": "Basil",
+        "status": "INNOCENT",
+        "id": "c_A1"
+      }
+    },
+    {
+      "cell": "B1",
+      "name": "Basil",
+      "profession": "Doctor",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "DIFFERENT",
+        "person_a": "Basil",
+        "person_b": "Clara",
+        "id": "c_B1"
+      }
+    },
+    {
+      "cell": "C1",
+      "name": "Clara",
+      "profession": "Engineer",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "EXACTLY",
+        "k": 2,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "C1",
+            "D1"
+          ]
+        },
+        "id": "c_C1"
+      }
+    },
+    {
+      "cell": "D1",
+      "name": "Dorian",
+      "profession": "Florist",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "AT_MOST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "D1",
+            "E1"
+          ]
+        },
+        "id": "c_D1"
+      }
+    },
+    {
+      "cell": "E1",
+      "name": "Elena",
+      "profession": "Gardener",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "PARITY",
+        "parity": "ODD",
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "E1",
+            "A2"
+          ]
+        },
+        "id": "c_E1"
+      }
+    },
+    {
+      "cell": "A2",
+      "name": "Felix",
+      "profession": "Historian",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "AT_LEAST",
+        "k": 2,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "A2",
+            "B2"
+          ]
+        },
+        "id": "c_A2"
+      }
+    },
+    {
+      "cell": "B2",
+      "name": "Greta",
+      "profession": "Inspector",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "DIFFERENT",
+        "person_a": "Greta",
+        "person_b": "Hugo",
+        "id": "c_B2"
+      }
+    },
+    {
+      "cell": "C2",
+      "name": "Hugo",
+      "profession": "Journalist",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "FACT",
+        "target": "Iris",
+        "status": "INNOCENT",
+        "id": "c_C2"
+      }
+    },
+    {
+      "cell": "D2",
+      "name": "Iris",
+      "profession": "Librarian",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "SAME",
+        "person_a": "Iris",
+        "person_b": "Jonah",
+        "id": "c_D2"
+      }
+    },
+    {
+      "cell": "E2",
+      "name": "Jonah",
+      "profession": "Baker",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "EXACTLY",
+        "k": 0,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "E2",
+            "A3"
+          ]
+        },
+        "id": "c_E2"
+      }
+    },
+    {
+      "cell": "A3",
+      "name": "Kira",
+      "profession": "Carpenter",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "AT_MOST",
+        "k": 0,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "A3",
+            "B3"
+          ]
+        },
+        "id": "c_A3"
+      }
+    },
+    {
+      "cell": "B3",
+      "name": "Leo",
+      "profession": "Doctor",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "PARITY",
+        "parity": "EVEN",
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "B3",
+            "C3"
+          ]
+        },
+        "id": "c_B3"
+      }
+    },
+    {
+      "cell": "C3",
+      "name": "Maya",
+      "profession": "Engineer",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "AT_LEAST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "C3",
+            "D3"
+          ]
+        },
+        "id": "c_C3"
+      }
+    },
+    {
+      "cell": "D3",
+      "name": "Nolan",
+      "profession": "Florist",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "SAME",
+        "person_a": "Nolan",
+        "person_b": "Olive",
+        "id": "c_D3"
+      }
+    },
+    {
+      "cell": "E3",
+      "name": "Olive",
+      "profession": "Gardener",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "FACT",
+        "target": "Pavel",
+        "status": "INNOCENT",
+        "id": "c_E3"
+      }
+    },
+    {
+      "cell": "A4",
+      "name": "Pavel",
+      "profession": "Historian",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "DIFFERENT",
+        "person_a": "Pavel",
+        "person_b": "Quinn",
+        "id": "c_A4"
+      }
+    },
+    {
+      "cell": "B4",
+      "name": "Quinn",
+      "profession": "Inspector",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "EXACTLY",
+        "k": 2,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "B4",
+            "C4"
+          ]
+        },
+        "id": "c_B4"
+      }
+    },
+    {
+      "cell": "C4",
+      "name": "Rosa",
+      "profession": "Journalist",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "AT_MOST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "C4",
+            "D4"
+          ]
+        },
+        "id": "c_C4"
+      }
+    },
+    {
+      "cell": "D4",
+      "name": "Silas",
+      "profession": "Librarian",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "PARITY",
+        "parity": "EVEN",
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "D4",
+            "E4"
+          ]
+        },
+        "id": "c_D4"
+      }
+    },
+    {
+      "cell": "E4",
+      "name": "Talia",
+      "profession": "Baker",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "AT_LEAST",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "E4",
+            "A5"
+          ]
+        },
+        "id": "c_E4"
+      }
+    },
+    {
+      "cell": "A5",
+      "name": "Uma",
+      "profession": "Carpenter",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "DIFFERENT",
+        "person_a": "Uma",
+        "person_b": "Vera",
+        "id": "c_A5"
+      }
+    },
+    {
+      "cell": "B5",
+      "name": "Vera",
+      "profession": "Doctor",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "FACT",
+        "target": "Wade",
+        "status": "INNOCENT",
+        "id": "c_B5"
+      }
+    },
+    {
+      "cell": "C5",
+      "name": "Wade",
+      "profession": "Engineer",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "SAME",
+        "person_a": "Wade",
+        "person_b": "Xena",
+        "id": "c_C5"
+      }
+    },
+    {
+      "cell": "D5",
+      "name": "Xena",
+      "profession": "Florist",
+      "status": "INNOCENT",
+      "clue": {
+        "type": "EXACTLY",
+        "k": 1,
+        "region": {
+          "type": "EXPLICIT",
+          "cells": [
+            "D5",
+            "E5"
+          ]
+        },
+        "id": "c_D5"
+      }
+    },
+    {
+      "cell": "E5",
+      "name": "Yara",
+      "profession": "Gardener",
+      "status": "CRIMINAL",
+      "clue": {
+        "type": "EXACTLY",
+        "k": 1,
+        "region": {
+          "type": "COMMON_NEIGHBORS",
+          "cell_a": "A1",
+          "cell_b": "C1"
+        },
+        "id": "c_E5"
+      }
+    }
+  ],
+  "initial_face_up": [
+    "A1"
+  ]
+}

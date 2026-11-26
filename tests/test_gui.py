@@ -479,7 +479,7 @@ def test_tkinter_widget_tree_under_display(puzzle_3x3_prog):
 def test_long_clues_do_not_resize_cards(filename, monkeypatch):
     """Long readable clues stay scrollable without changing board geometry."""
     import tkinter as tk
-    import griductive.ui.gui as gui
+    from griductive.ui import formatting
 
     try:
         root = tk.Tk()
@@ -491,7 +491,7 @@ def test_long_clues_do_not_resize_cards(filename, monkeypatch):
         sizes = {cell: (card.winfo_width(), card.winfo_height())
                  for cell, card in app._cell_buttons.items()}
         long_text = "A very long clue with many referenced characters. " * 100
-        monkeypatch.setattr(gui, "format_clue_text", lambda *args: long_text)
+        monkeypatch.setattr(formatting, "format_clue_text", lambda *args: long_text)
         app._refresh_ui()
         root.update()
         assert sizes == {cell: (card.winfo_width(), card.winfo_height())
@@ -741,6 +741,23 @@ def test_board_selection_does_not_resize_rows_and_picker_lists_puzzles(puzzle_3x
         table = next(w for w in descendants(app._dialog) if isinstance(w, ttk.Treeview))
         entries = {table.item(row, "text"): row for row in table.get_children()}
         assert "manifest" not in entries
+        assert {
+            "puzzle 3x3 chain 1",
+            "puzzle 4x4 chain 1",
+            "puzzle 5x5 chain 0",
+            "puzzle 5x5 chain 1",
+        } <= entries.keys()
+        table.selection_set(entries["puzzle 5x5 chain 0"])
+        play = next(w for w in descendants(app._dialog)
+                    if isinstance(w, ttk.Button) and w.cget("text") == "Play Selected")
+        play.invoke()
+        root.update()
+        assert app.controller.grid_size == 5
+        assert len(app._cell_buttons) == 25
+
+        app._on_load_button()
+        table = next(w for w in descendants(app._dialog) if isinstance(w, ttk.Treeview))
+        entries = {table.item(row, "text"): row for row in table.get_children()}
         table.selection_set(entries["puzzle 4x4 progressive"])
         play = next(w for w in descendants(app._dialog)
                     if isinstance(w, ttk.Button) and w.cget("text") == "Play Selected")

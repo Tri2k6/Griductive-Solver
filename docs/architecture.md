@@ -59,7 +59,16 @@ src/griductive/
 │   └── experiments.py         # Performance evaluation pipeline and report exporter
 │
 ├── ui/                        # [Module 5: Presentation]
-│   └── gui.py                 # Interactive Tkinter desktop GUI
+│   ├── gui.py                 # App state, public view data, and launch entry point
+│   ├── actions.py             # Verdicts, hints, board checks, and Auto Solve animation
+│   ├── board.py               # Scrollable grid, card rendering, and highlights
+│   ├── dialogs.py             # Verdict, settings, and puzzle-selection dialogs
+│   ├── formatting.py         # Public clue text and cell view data type
+│   ├── panels.py             # Character inspector, clues, and logs
+│   ├── portraits.py          # Character portrait drawing on a Tkinter canvas
+│   ├── theme.py              # Color palette, command labels, and bundled fonts
+│   ├── widgets.py            # Reusable cards and animated buttons
+│   └── window.py             # Main window layout, toolbar, and status display
 │
 ├── (model|cnf|...facades).py  # Top-level backward-compatibility facades
 └── __init__.py                # Root package exports

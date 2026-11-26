@@ -90,6 +90,66 @@
       "templates_used": ["FACT", "SAME", "DIFFERENT", "EXACTLY", "AT_LEAST", "AT_MOST", "PARITY"],
       "regions_used": ["ROW", "COL", "NEIGHBORS", "EXPLICIT", "COMMON_NEIGHBORS"],
       "extensions_used": ["PARITY", "COMMON_NEIGHBORS"]
+    },
+    {
+      "id": "puzzle_3x3_chain_1",
+      "file": "puzzles/puzzle_3x3_chain_1.json",
+      "grid_size": 3,
+      "description": "Progressive 3x3 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "clues_truth": true,
+      "expected_uniqueness": "UNIQUE",
+      "expected_playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 8,
+      "templates_used": ["AT_MOST", "DIFFERENT", "EXACTLY", "FACT", "PARITY", "SAME"],
+      "regions_used": ["COMMON_NEIGHBORS", "EXPLICIT"],
+      "extensions_used": ["COMMON_NEIGHBORS", "PARITY"]
+    },
+    {
+      "id": "puzzle_4x4_chain_1",
+      "file": "puzzles/puzzle_4x4_chain_1.json",
+      "grid_size": 4,
+      "description": "Progressive 4x4 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "clues_truth": true,
+      "expected_uniqueness": "UNIQUE",
+      "expected_playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 15,
+      "templates_used": ["AT_LEAST", "AT_MOST", "DIFFERENT", "EXACTLY", "FACT", "PARITY", "SAME"],
+      "regions_used": ["COMMON_NEIGHBORS", "EXPLICIT"],
+      "extensions_used": ["COMMON_NEIGHBORS", "PARITY"]
+    },
+    {
+      "id": "puzzle_5x5_chain_0",
+      "file": "puzzles/puzzle_5x5_chain_0.json",
+      "grid_size": 5,
+      "description": "Progressive 5x5 deduction chain, variant 0; all hidden cards proved without guessing.",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "clues_truth": true,
+      "expected_uniqueness": "UNIQUE",
+      "expected_playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 24,
+      "templates_used": ["AT_MOST", "DIFFERENT", "EXACTLY", "FACT", "PARITY", "SAME"],
+      "regions_used": ["COMMON_NEIGHBORS", "EXPLICIT"],
+      "extensions_used": ["COMMON_NEIGHBORS", "PARITY"]
+    },
+    {
+      "id": "puzzle_5x5_chain_1",
+      "file": "puzzles/puzzle_5x5_chain_1.json",
+      "grid_size": 5,
+      "description": "Progressive 5x5 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "clues_truth": true,
+      "expected_uniqueness": "UNIQUE",
+      "expected_playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 24,
+      "templates_used": ["AT_LEAST", "AT_MOST", "DIFFERENT", "EXACTLY", "FACT", "PARITY", "SAME"],
+      "regions_used": ["COMMON_NEIGHBORS", "EXPLICIT"],
+      "extensions_used": ["COMMON_NEIGHBORS", "PARITY"]
     }
   ]
 }
