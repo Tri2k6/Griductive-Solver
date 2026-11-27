@@ -124,8 +124,14 @@ def cmd_experiment(args: argparse.Namespace) -> int:
     """Run reproducible experiments and export results."""
     from griductive.analysis.experiments import ExperimentRunner
 
-    runner = ExperimentRunner(manifest_path=args.manifest, repetitions=args.repetitions)
-    print(f"Running Griductive experiment suite (repetitions={args.repetitions})...")
+    runner = ExperimentRunner(
+        manifest_path=args.manifest,
+        repetitions=args.repetitions,
+        timeout_seconds=args.timeout,
+    )
+    print(
+        f"Running Griductive experiment suite (repetitions={args.repetitions}, timeout={args.timeout}s)..."
+    )
 
     csv_p, json_p, md_p = runner.run_and_export(
         manifest_path=args.manifest,
@@ -173,6 +179,7 @@ def main(argv: list[str] | None = None) -> int:
     exp_parser.add_argument("--manifest", type=str, default=None, help="Path to puzzle manifest JSON")
     exp_parser.add_argument("--output-dir", type=str, default="experiments", help="Output directory for reports")
     exp_parser.add_argument("--repetitions", "-r", type=int, default=5, help="Number of timing repetitions per puzzle")
+    exp_parser.add_argument("--timeout", type=float, default=30.0, help="Per-puzzle wall-clock timeout in seconds")
     exp_parser.add_argument("--print-summary", action="store_true", help="Print summary table to console")
 
     # If no arguments provided, default to gui

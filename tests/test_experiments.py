@@ -208,3 +208,90 @@ def test_cli_experiment_subcommand(tmp_path):
     assert (tmp_path / "results.csv").is_file()
     assert (tmp_path / "results.json").is_file()
     assert (tmp_path / "summary.md").is_file()
+
+
+def test_run_puzzle_enforces_timeout_and_preserves_row(tmp_path):
+    """Verify per-puzzle wall-clock timeout terminates stalled workers and retains a TIMEOUT row."""
+    manifest_file = tmp_path / "timeout_manifest.json"
+    manifest_file.write_text(
+        json.dumps(
+            {
+                "manifest_version": "1.0",
+                "puzzles": [
+                    {
+                        "id": "synthetic_timeout_case",
+                        "file": str(MANIFEST_PATH.parent / "puzzle_3x3_progressive.json"),
+                        "grid_size": 3,
+                        "description": "Synthetic slow case exceeding timeout",
+                        "expected_steps": 8,
+                        "semantic_valid": True,
+                        "_test_delay_s": 1.5,
+                    },
+                    {
+                        "id": "normal_3x3_after_timeout",
+                        "file": str(MANIFEST_PATH.parent / "puzzle_3x3_progressive.json"),
+                        "grid_size": 3,
+                        "description": "Valid case after timeout must still run",
+                        "expected_steps": 8,
+                        "semantic_valid": True,
+                    },
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    runner = ExperimentRunner(manifest_path=manifest_file, repetitions=1, timeout_seconds=0.25)
+    csv_file, json_file, md_file = runner.run_and_export(output_dir=tmp_path, repetitions=1)
+
+    with csv_file.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    assert len(rows) == 2
+    assert rows[0]["puzzle_id"] == "synthetic_timeout_case"
+    assert rows[0]["terminal_status"] == "TIMEOUT"
+    assert "Exceeded wall-clock timeout" in rows[0]["error_message"]
+    assert rows[1]["puzzle_id"] == "normal_3x3_after_timeout"
+    assert rows[1]["terminal_status"] == "SOLVED"
+
+    md_text = md_file.read_text(encoding="utf-8")
+    assert "`synthetic_timeout_case`" in md_text
+    assert "`TIMEOUT`" in md_text
+
+
+def test_suite_retains_unexpected_error_without_aborting(tmp_path):
+    """Verify missing or corrupt manifest entries record ERROR rows instead of crashing the suite."""
+    manifest_file = tmp_path / "error_manifest.json"
+    manifest_file.write_text(
+        json.dumps(
+            {
+                "manifest_version": "1.0",
+                "puzzles": [
+                    {
+                        "id": "missing_file_case",
+                        "file": str(tmp_path / "does_not_exist.json"),
+                        "grid_size": 4,
+                        "description": "Missing puzzle file",
+                        "expected_steps": 15,
+                        "semantic_valid": True,
+                    },
+                    {
+                        "id": "valid_3x3_case",
+                        "file": str(MANIFEST_PATH.parent / "puzzle_3x3_progressive.json"),
+                        "grid_size": 3,
+                        "description": "Valid 3x3 puzzle",
+                        "expected_steps": 8,
+                        "semantic_valid": True,
+                    },
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    runner = ExperimentRunner(manifest_path=manifest_file, repetitions=1, timeout_seconds=10.0)
+    suite = runner.run_suite(repetitions=1)
+    assert len(suite.results) == 2
+    assert suite.results[0].terminal_status == "ERROR"
+    assert suite.results[0].error_message is not None
+    assert suite.results[1].terminal_status == "SOLVED"
+

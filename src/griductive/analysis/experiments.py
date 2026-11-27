@@ -5,7 +5,7 @@ Provides reproducible measurement of:
 - SAT query counts, DPLL decisions, propagations, backtracks.
 - Runtime (distinguishing solver DPLL runtime from end-to-end solving).
 - Timing variability (mean, std dev, min, max across repetitions).
-- Verification of metric accounting and search counter determinism.
+- Bounded per-puzzle wall-clock timeout and non-aborting failure row retention.
 - Export to machine-readable CSV, JSON, and human-readable Markdown summary.
 """
 
@@ -15,7 +15,7 @@ import csv
 from dataclasses import asdict, dataclass
 import datetime
 import json
-import math
+import multiprocessing
 import os
 from pathlib import Path
 import platform
@@ -24,12 +24,10 @@ import sys
 import time
 from typing import Any, Mapping, Sequence
 
-from griductive.domain.model import CellId, Puzzle
-from griductive.solver.dpll import DpllMetrics
-from griductive.solver.kb import build_knowledge_base
-from griductive.game.controller import AutoSolveReport, AutoSolveStatus, GameController
+from griductive.analysis.validation import validate_puzzle
+from griductive.game.controller import AutoSolveReport, GameController
 from griductive.game.io import load_puzzle_from_json
-from griductive.analysis.validation import PlayabilityResult, UniquenessResult, validate_puzzle
+from griductive.solver.kb import build_knowledge_base
 
 
 @dataclass(frozen=True)
@@ -137,6 +135,26 @@ class ExperimentSuiteReport:
     settings: Mapping[str, Any]
 
 
+def _run_puzzle_worker(
+    connection: Any,
+    manifest_path: str,
+    entry: dict[str, Any],
+    repetitions: int,
+     artificial_delay_s: float = 0.0,
+) -> None:
+    """Execute a single puzzle benchmark in an isolated process for deadline enforcement."""
+    try:
+        if artificial_delay_s > 0:
+            time.sleep(artificial_delay_s)
+        runner = ExperimentRunner(manifest_path=manifest_path, repetitions=repetitions)
+        res = runner._run_puzzle_direct(entry, repetitions=repetitions)
+        connection.send((res, None))
+    except Exception as exc:
+        connection.send((None, f"{type(exc).__name__}: {exc}"))
+    finally:
+        connection.close()
+
+
 class ExperimentRunner:
     """Orchestrates deterministic measurement and benchmarking of Griductive puzzles."""
 
@@ -146,20 +164,103 @@ class ExperimentRunner:
         repetitions: int = 5,
         timeout_seconds: float = 30.0,
     ) -> None:
+        if timeout_seconds <= 0:
+            raise ValueError("timeout_seconds must be positive")
         if manifest_path is None:
-            # Look up project root
             manifest_path = Path(__file__).resolve().parents[3] / "puzzles" / "manifest.json"
         self.manifest_path = Path(manifest_path)
         self.repetitions = max(1, repetitions)
         self.timeout_seconds = timeout_seconds
+
+    @staticmethod
+    def _failure_result(
+        entry: Mapping[str, Any],
+        status: str,
+        message: str,
+    ) -> ExperimentResult:
+        """Build a preserved failure/timeout row so no manifest case is dropped."""
+        empty = TimingStats.from_samples(())
+        return ExperimentResult(
+            puzzle_id=str(entry.get("id", "unknown")),
+            file_path=str(entry.get("file", "")),
+            grid_size=int(entry.get("grid_size", 0)),
+            description=str(entry.get("description", "")),
+            is_valid_format=False,
+            clues_truth=False,
+            uniqueness="UNKNOWN",
+            solution_count=0,
+            playability="SKIPPED",
+            expected_steps=int(entry.get("expected_steps", 0)),
+            terminal_status=status,
+            total_steps=0,
+            initial_vars=0,
+            initial_prim_vars=0,
+            initial_aux_vars=0,
+            initial_clauses=0,
+            final_vars=0,
+            final_prim_vars=0,
+            final_aux_vars=0,
+            final_clauses=0,
+            total_sat_calls=0,
+            dpll_decisions=0,
+            dpll_propagations=0,
+            dpll_backtracks=0,
+            dpll_runtime=empty,
+            e2e_runtime=empty,
+            repetitions=0,
+            counters_deterministic=False,
+            steps_detail=(),
+            error_message=message,
+        )
 
     def run_puzzle(
         self,
         entry: dict[str, Any],
         repetitions: int | None = None,
     ) -> ExperimentResult:
-        """Run performance evaluation and metric accounting on a single puzzle entry."""
+        """Run performance evaluation on one puzzle within the configured wall-clock timeout."""
         reps = self.repetitions if repetitions is None else max(1, repetitions)
+        delay_s = float(entry.get("_test_delay_s", 0.0))
+        ctx = multiprocessing.get_context("spawn")
+        parent_conn, child_conn = ctx.Pipe(duplex=False)
+        proc = ctx.Process(
+            target=_run_puzzle_worker,
+            args=(child_conn, str(self.manifest_path), entry, reps, delay_s),
+        )
+        proc.start()
+        child_conn.close()
+        try:
+            if not parent_conn.poll(self.timeout_seconds):
+                proc.terminate()
+                proc.join()
+                return self._failure_result(
+                    entry,
+                    "TIMEOUT",
+                    f"Exceeded wall-clock timeout of {self.timeout_seconds:g}s.",
+                )
+            try:
+                result, error = parent_conn.recv()
+            except EOFError:
+                return self._failure_result(
+                    entry,
+                    "ERROR",
+                    f"Worker exited unexpectedly without result (exitcode={proc.exitcode}).",
+                )
+            if error is not None:
+                return self._failure_result(entry, "ERROR", error)
+            assert result is not None
+            return result
+        finally:
+            parent_conn.close()
+            proc.join()
+
+    def _run_puzzle_direct(
+        self,
+        entry: dict[str, Any],
+        repetitions: int,
+    ) -> ExperimentResult:
+        """Measure a single puzzle directly inside the worker process."""
+        reps = max(1, repetitions)
         puzzle_id = entry.get("id", "unknown")
         raw_file = entry.get("file", "")
         fpath = Path(raw_file)
@@ -179,10 +280,8 @@ class ExperimentRunner:
             try:
                 load_puzzle_from_json(fpath)
                 err_msg = "Expected semantic validation rejection, but puzzle loaded successfully."
-                is_valid = False
             except Exception as e:
                 err_msg = str(e)
-                is_valid = False
 
             return ExperimentResult(
                 puzzle_id=puzzle_id,
@@ -265,22 +364,21 @@ class ExperimentRunner:
 
         assert baseline_report is not None
 
-        step_records: list[StepMetricRecord] = []
-        for s in baseline_report.steps:
-            step_records.append(
-                StepMetricRecord(
-                    step_number=s.step_number,
-                    target_cell=str(s.target_cell),
-                    target_verdict=s.target_verdict.value,
-                    revealed_clue_id=s.revealed_clue_id,
-                    active_clues_count=len(s.active_clue_ids),
-                    step_sat_calls=s.step_sat_calls,
-                    step_decisions=s.step_metrics.decisions,
-                    step_propagations=s.step_metrics.propagations,
-                    step_backtracks=s.step_metrics.backtracks,
-                    step_runtime_s=s.step_metrics.runtime,
-                )
+        step_records = tuple(
+            StepMetricRecord(
+                step_number=s.step_number,
+                target_cell=str(s.target_cell),
+                target_verdict=s.target_verdict.value,
+                revealed_clue_id=s.revealed_clue_id,
+                active_clues_count=len(s.active_clue_ids),
+                step_sat_calls=s.step_sat_calls,
+                step_decisions=s.step_metrics.decisions,
+                step_propagations=s.step_metrics.propagations,
+                step_backtracks=s.step_metrics.backtracks,
+                step_runtime_s=s.step_metrics.runtime,
             )
+            for s in baseline_report.steps
+        )
 
         return ExperimentResult(
             puzzle_id=puzzle_id,
@@ -311,7 +409,7 @@ class ExperimentRunner:
             e2e_runtime=TimingStats.from_samples(e2e_samples),
             repetitions=reps,
             counters_deterministic=counters_match,
-            steps_detail=tuple(step_records),
+            steps_detail=step_records,
             error_message=None,
         )
 
@@ -329,10 +427,7 @@ class ExperimentRunner:
         data = json.loads(m_path.read_text(encoding="utf-8"))
         puzzles = data.get("puzzles", [])
 
-        results: list[ExperimentResult] = []
-        for entry in puzzles:
-            res = self.run_puzzle(entry, repetitions=reps)
-            results.append(res)
+        results = tuple(self.run_puzzle(entry, repetitions=reps) for entry in puzzles)
 
         now_str = datetime.datetime.now(datetime.timezone.utc).isoformat()
         platform_meta = {
@@ -351,7 +446,7 @@ class ExperimentRunner:
         return ExperimentSuiteReport(
             timestamp=now_str,
             manifest_file=str(m_path),
-            results=tuple(results),
+            results=results,
             platform_info=platform_meta,
             settings=settings_meta,
         )
@@ -392,6 +487,7 @@ class ExperimentRunner:
             "e2e_runtime_max_ms",
             "repetitions",
             "counters_deterministic",
+            "error_message",
         ]
 
         with target.open("w", newline="", encoding="utf-8") as f:
@@ -430,6 +526,7 @@ class ExperimentRunner:
                         "e2e_runtime_max_ms": f"{r.e2e_runtime.max_ms:.3f}",
                         "repetitions": r.repetitions,
                         "counters_deterministic": r.counters_deterministic,
+                        "error_message": r.error_message or "",
                     }
                 )
 
@@ -455,7 +552,7 @@ class ExperimentRunner:
 
     @classmethod
     def generate_summary_markdown(cls, report: ExperimentSuiteReport) -> str:
-        """Generate human-readable Markdown summary report with tables and analysis."""
+        """Generate human-readable Markdown summary report with dynamic tables and analysis."""
         lines = [
             "# Griductive Solver — Experimental Performance Report",
             "",
@@ -463,23 +560,24 @@ class ExperimentRunner:
             f"- **Platform:** `{report.platform_info.get('system')} {report.platform_info.get('release')} ({report.platform_info.get('machine')})`",
             f"- **Python Version:** `{report.platform_info.get('python_version')}`",
             f"- **Timing Repetitions:** `{report.settings.get('repetitions')} runs per puzzle`",
+            f"- **Per-Puzzle Wall-Clock Timeout:** `{report.settings.get('timeout_seconds')}s`",
             "",
             "## 1. Summary Metrics Table",
             "",
-            "| Puzzle ID | Grid | Playability | Status | Steps | Prim / Aux | Clauses | SAT Calls | Dec | Prop | Back | DPLL Time (ms) | E2E Time (ms) |",
-            "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |",
+            "| Puzzle ID | Grid | Uniqueness | Playability | Status | Steps | Prim / Aux | Clauses | SAT Calls | Dec | Prop | Back | DPLL Time (ms) | E2E Time (ms) |",
+            "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |",
         ]
 
         for r in report.results:
             if not r.is_valid_format:
                 lines.append(
-                    f"| `{r.puzzle_id}` | {r.grid_size}×{r.grid_size} | {r.playability} | `{r.terminal_status}` | - | - | - | - | - | - | - | - | - |"
+                    f"| `{r.puzzle_id}` | {r.grid_size}×{r.grid_size} | {r.uniqueness} | {r.playability} | `{r.terminal_status}` | - | - | - | - | - | - | - | - | - |"
                 )
             else:
                 lines.append(
                     "".join(
                         [
-                            f"| `{r.puzzle_id}` | {r.grid_size}×{r.grid_size} | {r.playability} | `{r.terminal_status}` | ",
+                            f"| `{r.puzzle_id}` | {r.grid_size}×{r.grid_size} | {r.uniqueness} | {r.playability} | `{r.terminal_status}` | ",
                             f"{r.total_steps}/{r.expected_steps} | {r.final_prim_vars} / {r.final_aux_vars} | {r.final_clauses} | ",
                             f"{r.total_sat_calls} | {r.dpll_decisions} | {r.dpll_propagations} | {r.dpll_backtracks} | ",
                             f"{r.dpll_runtime.mean_ms:.2f} ± {r.dpll_runtime.std_ms:.2f} | ",
@@ -488,33 +586,60 @@ class ExperimentRunner:
                     )
                 )
 
+        measured = [r for r in report.results if r.repetitions > 0]
+        solved = [r for r in report.results if r.terminal_status == "SOLVED"]
+        stalled = [r for r in report.results if r.terminal_status == "STALLED"]
+        failed = [
+            r for r in report.results
+            if r.terminal_status in {"INVALID_PUZZLE", "TIMEOUT", "ERROR", "INCONSISTENT"}
+        ]
+        det_count = sum(1 for r in measured if r.counters_deterministic)
+
+        size_summaries: list[str] = []
+        for size in sorted({r.grid_size for r in solved}):
+            group = [r for r in solved if r.grid_size == size]
+            avg_e2e = statistics.mean(r.e2e_runtime.mean_ms for r in group)
+            avg_dpll = statistics.mean(r.dpll_runtime.mean_ms for r in group)
+            avg_calls = statistics.mean(r.total_sat_calls for r in group)
+            label = f"{size}×{size}" + (" stress cases" if size >= 5 else "")
+            size_summaries.append(
+                f"  - **{label} ({len(group)} solved puzzle(s)):** mean SAT calls = `{avg_calls:.1f}`, "
+                f"mean DPLL time = `{avg_dpll:.2f} ms`, mean end-to-end time = `{avg_e2e:.2f} ms`."
+            )
+
         lines.extend(
             [
                 "",
                 "## 2. Key Experimental Findings and Analysis",
                 "",
                 "### A. Determinism & Accounting Verification",
-                "- Across repeated timing iterations, all search counters (`total_sat_calls`, `dpll_decisions`, `dpll_propagations`, `dpll_backtracks`, `total_steps`) demonstrated **zero variance** (`std = 0.0`), confirming 100% deterministic search order and reproducible metric accounting.",
+                f"- Deterministic search counters verified on `{det_count}/{len(measured)}` measured cases (`total_sat_calls`, `dpll_decisions`, `dpll_propagations`, `dpll_backtracks`, `total_steps` invariant across all repetitions).",
+                f"- Overall manifest breakdown (`{len(report.results)}` total cases): `{len(solved)}` solved without guessing, `{len(stalled)}` halted cleanly as `STALLED` without guessing, and `{len(failed)}` retained as invalid/error/timeout diagnostic rows.",
                 "",
-                "### B. Progressive Deduction vs. Stalled Puzzles",
-                "- **Progressively Solvable Puzzles (`puzzle_3x3_progressive`, `puzzle_4x4_progressive`):**",
-                "  - Successfully deduced all hidden character cards without guessing (8 steps for 3×3, 15 steps for 4×4).",
-                "  - Reached solution with **0 branching decisions** and **0 backtracks** during forced-card proofs, demonstrating that sequential counter and XOR parity encodings propagate deterministically via unit propagation.",
-                "- **Unique-but-Stalled Puzzles (`puzzle_3x3_stalled`, `puzzle_4x4_stalled`):**",
-                "  - Confirmed `UniquenessResult.UNIQUE` (exactly one ground truth solution exists).",
-                "  - Correctly halted without guessing (`AutoSolveStatus.STALLED`) when no remaining face-down cards were logically forced under current public state.",
-                "  - Demonstrated branching during refutation queries (`124` decisions on 3×3, `132` on 4×4), as the solver explored branch paths to establish that neither verdict is forced.",
-                "- **Under-constrained Puzzles (`puzzle_3x3_ambiguous`):**",
-                "  - Offline validation reported `UniquenessResult.MULTIPLE` (2 satisfying models).",
-                "  - Deduction loop cleanly halted with 0 steps, proving sound rejection of unprovable calls.",
+                "### B. Progressive Deduction, Stalled States & Retained Failure/Timeout Rows",
+                "- **Progressively Solvable Puzzles (`SOLVED`):** Every hidden card was proved strictly via refutation (`UNSAT` under opposite temporary assumption) before reveal.",
+                "- **Stalled & Ambiguous Puzzles (`STALLED`):** Unique-but-stalled fixtures (`UNIQUE`) and under-constrained fixtures (`MULTIPLE`) both terminated safely without guessing once neither `C_i` nor `¬C_i` was entailed.",
+            ]
+        )
+        if failed:
+            lines.append("- **Retained Failure / Timeout / Invalid Cases (never omitted from exports):**")
+            for r in failed:
+                lines.append(
+                    f"  - `{r.puzzle_id}` (`{r.terminal_status}`): {r.error_message or 'Recorded diagnostic failure.'}"
+                )
+
+        lines.extend(
+            [
                 "",
                 "### C. Theoretical Complexity vs. Empirical Measurements",
-                "- **Theoretical Bound:** In the worst-case, DPLL on $V = N^2 + N_{aux}$ variables has exponential complexity $\\mathcal{O}(2^V)$. Each entailment wave queries up to $2 \\times U + 1$ SAT queries where $U \\le N^2$ is unresolved cards.",
-                "- **Empirical Reality:** Realized runtimes remain in the millisecond range (`~2.4 ms` for 3×3 and `~23.7 ms` for 4×4 end-to-end), because unit propagation chains immediately prune unsatisfiable refutation branches without exponential branching.",
+                "- **Theoretical Bound:** Worst-case DPLL search over $V = N^2 + N_{\\text{aux}}$ variables is $\\mathcal{O}(2^V)$, and each deduction wave issues up to $2U + 1$ SAT queries for $U \\le N^2$ unresolved cards.",
+                "- **Empirical Scaling Across Grid Sizes:**",
+                *size_summaries,
+                "- **Timing Convention:** Per-puzzle wall-clock timeout bounds worker execution, while reported `e2e_runtime` and `dpll_runtime` measure pure solving repetitions excluding subprocess spawn and offline uniqueness validation.",
             ]
         )
 
-        return "\n".join(lines)
+        return "\n".join(lines) + "\n"
 
     @classmethod
     def export_summary_markdown(cls, report: ExperimentSuiteReport, out_path: str | Path) -> Path:
@@ -561,12 +686,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--repetitions", "-r", type=int, default=5, help="Number of timing repetitions per puzzle"
     )
+    parser.add_argument(
+        "--timeout", type=float, default=30.0, help="Per-puzzle wall-clock timeout in seconds"
+    )
     parser.add_argument("--print-summary", action="store_true", help="Print summary table to console")
 
     args = parser.parse_args(argv)
 
-    runner = ExperimentRunner(manifest_path=args.manifest, repetitions=args.repetitions)
-    print(f"Running Griductive experiment suite (repetitions={args.repetitions})...")
+    runner = ExperimentRunner(
+        manifest_path=args.manifest,
+        repetitions=args.repetitions,
+        timeout_seconds=args.timeout,
+    )
+    print(
+        f"Running Griductive experiment suite (repetitions={args.repetitions}, timeout={args.timeout}s)..."
+    )
 
     csv_p, json_p, md_p = runner.run_and_export(
         manifest_path=args.manifest,

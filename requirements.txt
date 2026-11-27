@@ -1,0 +1,10 @@
+# Griductive Solver — Python package requirements
+#
+# Core solver, CLI, and Tkinter GUI use only the Python >= 3.10 standard library
+# (tkinter is bundled with standard CPython installers; on Debian/Ubuntu/Kali,
+# ensure system package `python3-tk` is installed).
+#
+# Development & automated test suite dependencies:
+pytest>=7.4
+pytest-cov>=4.1
+typeguard>=4.0

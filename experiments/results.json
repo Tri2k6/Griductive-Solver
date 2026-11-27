@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T17:59:07.935392+00:00",
+  "timestamp": "2026-11-27T00:24:58.521693+00:00",
   "manifest_file": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/manifest.json",
   "platform_info": {
     "system": "Linux",
-    "release": "7.1.5+kali-amd64",
+    "release": "7.2.15+kali-amd64",
     "machine": "x86_64",
-    "python_version": "3.14.8",
+    "python_version": "3.14.10",
     "cpu_count": 16
   },
   "settings": {
-    "repetitions": 2,
+    "repetitions": 5,
     "timeout_seconds": 30.0,
     "manifest": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/manifest.json"
   },
@@ -40,26 +40,32 @@
       "dpll_propagations": 610,
       "dpll_backtracks": 0,
       "dpll_runtime": {
-        "mean_s": 0.0014134504963294603,
-        "std_s": 1.9081285959767542e-05,
-        "min_s": 0.001399957989633549,
-        "max_s": 0.0014269430030253716,
+        "mean_s": 0.0013512511999579147,
+        "std_s": 8.57629660124172e-05,
+        "min_s": 0.0012567340017994866,
+        "max_s": 0.001442053001255772,
         "samples_s": [
-          0.0014269430030253716,
-          0.001399957989633549
+          0.0013340449995666859,
+          0.0012851359986143507,
+          0.0012567340017994866,
+          0.0014382879985532782,
+          0.001442053001255772
         ]
       },
       "e2e_runtime": {
-        "mean_s": 0.002549287997680949,
-        "std_s": 4.889219128418681e-05,
-        "min_s": 0.0025147159976768307,
-        "max_s": 0.0025838599976850674,
+        "mean_s": 0.002378748599994651,
+        "std_s": 0.00012818721369197447,
+        "min_s": 0.0022421590001613367,
+        "max_s": 0.002519142999972246,
         "samples_s": [
-          0.0025838599976850674,
-          0.0025147159976768307
+          0.0023404979999668285,
+          0.0022834899998542824,
+          0.0022421590001613367,
+          0.0025084530000185623,
+          0.002519142999972246
         ]
       },
-      "repetitions": 2,
+      "repetitions": 5,
       "counters_deterministic": true,
       "steps_detail": [
         {
@@ -72,7 +78,7 @@
           "step_decisions": 0,
           "step_propagations": 32,
           "step_backtracks": 0,
-          "step_runtime_s": 3.7655001506209373e-05
+          "step_runtime_s": 3.064399925278849e-05
         },
         {
           "step_number": 2,
@@ -84,7 +90,7 @@
           "step_decisions": 0,
           "step_propagations": 41,
           "step_backtracks": 0,
-          "step_runtime_s": 4.554000770440325e-05
+          "step_runtime_s": 4.121899974052212e-05
         },
         {
           "step_number": 3,
@@ -96,7 +102,7 @@
           "step_decisions": 0,
           "step_propagations": 50,
           "step_backtracks": 0,
-          "step_runtime_s": 5.724899529013783e-05
+          "step_runtime_s": 5.359800047699537e-05
         },
         {
           "step_number": 4,
@@ -108,7 +114,7 @@
           "step_decisions": 0,
           "step_propagations": 87,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00014820499200141057
+          "step_runtime_s": 0.00013693200003217498
         },
         {
           "step_number": 5,
@@ -120,7 +126,7 @@
           "step_decisions": 0,
           "step_propagations": 115,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00022283200087258592
+          "step_runtime_s": 0.0002090309997129225
         },
         {
           "step_number": 6,
@@ -132,7 +138,7 @@
           "step_decisions": 0,
           "step_propagations": 95,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0002202480027335696
+          "step_runtime_s": 0.00020316700033617963
         },
         {
           "step_number": 7,
@@ -144,7 +150,7 @@
           "step_decisions": 0,
           "step_propagations": 122,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00040001599700190127
+          "step_runtime_s": 0.00040256700003737933
         },
         {
           "step_number": 8,
@@ -156,7 +162,7 @@
           "step_decisions": 0,
           "step_propagations": 68,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00029519800591515377
+          "step_runtime_s": 0.00025688699997772346
         }
       ],
       "error_message": null
@@ -187,26 +193,32 @@
       "dpll_propagations": 1390,
       "dpll_backtracks": 0,
       "dpll_runtime": {
-        "mean_s": 0.011374269022780936,
-        "std_s": 0.00014710791536041014,
-        "min_s": 0.011270248018263374,
-        "max_s": 0.011478290027298499,
+        "mean_s": 0.011754572999871015,
+        "std_s": 0.00017682853029068026,
+        "min_s": 0.011519349000764123,
+        "max_s": 0.011930090000078053,
         "samples_s": [
-          0.011270248018263374,
-          0.011478290027298499
+          0.01189961099885295,
+          0.011930090000078053,
+          0.011519349000764123,
+          0.01162746799946035,
+          0.011796347000199603
         ]
       },
       "e2e_runtime": {
-        "mean_s": 0.011763579004764324,
-        "std_s": 0.00014973127371187002,
-        "min_s": 0.011657703005766962,
-        "max_s": 0.011869455003761686,
+        "mean_s": 0.012118954800007487,
+        "std_s": 0.00017764408372189194,
+        "min_s": 0.011874748000082036,
+        "max_s": 0.012300257999868336,
         "samples_s": [
-          0.011657703005766962,
-          0.011869455003761686
+          0.01226318099998025,
+          0.012300257999868336,
+          0.011874748000082036,
+          0.012008960999992269,
+          0.012147626000114542
         ]
       },
-      "repetitions": 2,
+      "repetitions": 5,
       "counters_deterministic": true,
       "steps_detail": [
         {
@@ -219,7 +231,7 @@
           "step_decisions": 64,
           "step_propagations": 723,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00577684301242698
+          "step_runtime_s": 0.006031651999137466
         }
       ],
       "error_message": null
@@ -250,26 +262,32 @@
       "dpll_propagations": 17,
       "dpll_backtracks": 0,
       "dpll_runtime": {
-        "mean_s": 2.983950253110379e-05,
-        "std_s": 1.096723559981721e-06,
-        "min_s": 2.9064001864753664e-05,
-        "max_s": 3.0615003197453916e-05,
+        "mean_s": 2.589100008663081e-05,
+        "std_s": 1.281777299337514e-06,
+        "min_s": 2.462900056343642e-05,
+        "max_s": 2.74099995749566e-05,
         "samples_s": [
-          3.0615003197453916e-05,
-          2.9064001864753664e-05
+          2.7123999871037086e-05,
+          2.74099995749566e-05,
+          2.5002000484164455e-05,
+          2.5289999939559493e-05,
+          2.462900056343642e-05
         ]
       },
       "e2e_runtime": {
-        "mean_s": 0.00014871900202706456,
-        "std_s": 2.705393446614446e-06,
-        "min_s": 0.00014680599997518584,
-        "max_s": 0.00015063200407894328,
+        "mean_s": 0.00011874060000991449,
+        "std_s": 7.453251557647354e-06,
+        "min_s": 0.00011270899994997308,
+        "max_s": 0.00013085000000501168,
         "samples_s": [
-          0.00015063200407894328,
-          0.00014680599997518584
+          0.00013085000000501168,
+          0.00012074599999323254,
+          0.00011581600006138615,
+          0.00011358200003996899,
+          0.00011270899994997308
         ]
       },
-      "repetitions": 2,
+      "repetitions": 5,
       "counters_deterministic": true,
       "steps_detail": [],
       "error_message": null
@@ -300,26 +318,32 @@
       "dpll_propagations": 4622,
       "dpll_backtracks": 0,
       "dpll_runtime": {
-        "mean_s": 0.020127795469306875,
-        "std_s": 0.00010637496190815501,
-        "min_s": 0.020052577012393158,
-        "max_s": 0.020203013926220592,
+        "mean_s": 0.020361000001230423,
+        "std_s": 0.00023114592322412482,
+        "min_s": 0.019984109001370598,
+        "max_s": 0.020580302998951083,
         "samples_s": [
-          0.020203013926220592,
-          0.020052577012393158
+          0.020580302998951083,
+          0.019984109001370598,
+          0.020510513000772335,
+          0.020340682001688037,
+          0.02038939300337006
         ]
       },
       "e2e_runtime": {
-        "mean_s": 0.023595621998538263,
-        "std_s": 0.00015202371344806857,
-        "min_s": 0.023488124999857973,
-        "max_s": 0.023703118997218553,
+        "mean_s": 0.023902440999972897,
+        "std_s": 0.0003236165072282965,
+        "min_s": 0.0234072699997796,
+        "max_s": 0.024275129999978162,
         "samples_s": [
-          0.023703118997218553,
-          0.023488124999857973
+          0.024275129999978162,
+          0.0234072699997796,
+          0.02408056400008718,
+          0.023902399999997215,
+          0.023846841000022323
         ]
       },
-      "repetitions": 2,
+      "repetitions": 5,
       "counters_deterministic": true,
       "steps_detail": [
         {
@@ -332,7 +356,7 @@
           "step_decisions": 0,
           "step_propagations": 60,
           "step_backtracks": 0,
-          "step_runtime_s": 6.980098987696692e-05
+          "step_runtime_s": 6.627500033573597e-05
         },
         {
           "step_number": 2,
@@ -344,7 +368,7 @@
           "step_decisions": 0,
           "step_propagations": 83,
           "step_backtracks": 0,
-          "step_runtime_s": 9.559698082739487e-05
+          "step_runtime_s": 0.00014433499973165453
         },
         {
           "step_number": 3,
@@ -356,7 +380,7 @@
           "step_decisions": 0,
           "step_propagations": 106,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00012830999185098335
+          "step_runtime_s": 0.00012619900053323363
         },
         {
           "step_number": 4,
@@ -368,7 +392,7 @@
           "step_decisions": 0,
           "step_propagations": 123,
           "step_backtracks": 0,
-          "step_runtime_s": 0.00015011099458206445
+          "step_runtime_s": 0.00015137499940465204
         },
         {
           "step_number": 5,
@@ -380,7 +404,7 @@
           "step_decisions": 0,
           "step_propagations": 217,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0003812240029219538
+          "step_runtime_s": 0.00047604300061721005
         },
         {
           "step_number": 6,
@@ -392,7 +416,7 @@
           "step_decisions": 0,
           "step_propagations": 292,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0006165899903862737
+          "step_runtime_s": 0.0005988029995478428
         },
         {
           "step_number": 7,
@@ -404,7 +428,7 @@
           "step_decisions": 0,
           "step_propagations": 553,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0022318059927783906
+          "step_runtime_s": 0.002240225999685208
         },
         {
           "step_number": 8,
@@ -416,7 +440,7 @@
           "step_decisions": 0,
           "step_propagations": 511,
           "step_backtracks": 0,
-          "step_runtime_s": 0.001983140995434951
+          "step_runtime_s": 0.002010595999990983
         },
         {
           "step_number": 9,
@@ -428,7 +452,7 @@
           "step_decisions": 0,
           "step_propagations": 538,
           "step_backtracks": 0,
-          "step_runtime_s": 0.002430889981042128
+          "step_runtime_s": 0.0023930879995077703
         },
         {
           "step_number": 10,
@@ -440,7 +464,7 @@
           "step_decisions": 0,
           "step_propagations": 479,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0020086940057808533
+          "step_runtime_s": 0.002087599000105911
         },
         {
           "step_number": 11,
@@ -452,7 +476,7 @@
           "step_decisions": 0,
           "step_propagations": 466,
           "step_backtracks": 0,
-          "step_runtime_s": 0.002632193012686912
+          "step_runtime_s": 0.0027001930004644237
         },
         {
           "step_number": 12,
@@ -464,7 +488,7 @@
           "step_decisions": 0,
           "step_propagations": 383,
           "step_backtracks": 0,
-          "step_runtime_s": 0.002170639992982615
+          "step_runtime_s": 0.002162501999464439
         },
         {
           "step_number": 13,
@@ -476,7 +500,7 @@
           "step_decisions": 0,
           "step_propagations": 398,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0026694449989008717
+          "step_runtime_s": 0.002603138000040417
         },
         {
           "step_number": 14,
@@ -488,7 +512,7 @@
           "step_decisions": 0,
           "step_propagations": 235,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0015167849851422943
+          "step_runtime_s": 0.0016167389997008286
         },
         {
           "step_number": 15,
@@ -500,7 +524,7 @@
           "step_decisions": 0,
           "step_propagations": 178,
           "step_backtracks": 0,
-          "step_runtime_s": 0.0011177870110259391
+          "step_runtime_s": 0.001203191999820774
         }
       ],
       "error_message": null
@@ -531,26 +555,32 @@
       "dpll_propagations": 586,
       "dpll_backtracks": 0,
       "dpll_runtime": {
-        "mean_s": 0.002314569519512588,
-        "std_s": 4.757628559038415e-05,
-        "min_s": 0.0022809280053479597,
-        "max_s": 0.0023482110336772166,
+        "mean_s": 0.002333063600326568,
+        "std_s": 0.0001774116823378627,
+        "min_s": 0.002076875000511791,
+        "max_s": 0.0025779770003282465,
         "samples_s": [
-          0.0023482110336772166,
-          0.0022809280053479597
+          0.0023495230004755285,
+          0.0023306930002036097,
+          0.002330250000113665,
+          0.002076875000511791,
+          0.0025779770003282465
         ]
       },
       "e2e_runtime": {
-        "mean_s": 0.002518829998734873,
-        "std_s": 5.069814155487108e-05,
-        "min_s": 0.002482980999047868,
-        "max_s": 0.0025546789984218776,
+        "mean_s": 0.002549283599955743,
+        "std_s": 0.0001973876065647351,
+        "min_s": 0.0022671570000056818,
+        "max_s": 0.002823158999945008,
         "samples_s": [
-          0.0025546789984218776,
-          0.002482980999047868
+          0.002580305000037697,
+          0.002541270999927292,
+          0.0025345259998630354,
+          0.0022671570000056818,
+          0.002823158999945008
         ]
       },
-      "repetitions": 2,
+      "repetitions": 5,
       "counters_deterministic": true,
       "steps_detail": [],
       "error_message": null
@@ -598,6 +628,1086 @@
       "counters_deterministic": true,
       "steps_detail": [],
       "error_message": "Puzzle validation failed: clue c_A1 for cell A1 (FactClue) evaluates to FALSE under the hidden solution."
+    },
+    {
+      "puzzle_id": "puzzle_3x3_chain_1",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_3x3_chain_1.json",
+      "grid_size": 3,
+      "description": "Progressive 3x3 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 8,
+      "terminal_status": "SOLVED",
+      "total_steps": 8,
+      "initial_vars": 9,
+      "initial_prim_vars": 9,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 16,
+      "final_prim_vars": 9,
+      "final_aux_vars": 7,
+      "final_clauses": 36,
+      "total_sat_calls": 77,
+      "dpll_decisions": 0,
+      "dpll_propagations": 557,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.0008439498001280299,
+        "std_s": 3.975925074690964e-05,
+        "min_s": 0.0007949260002533265,
+        "max_s": 0.0009017690006203338,
+        "samples_s": [
+          0.0007949260002533265,
+          0.0008519460009210889,
+          0.000821917999019206,
+          0.0009017690006203338,
+          0.0008491899998261943
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.0017859030000181519,
+        "std_s": 6.806283186965122e-05,
+        "min_s": 0.0017138789999080473,
+        "max_s": 0.001884712999981275,
+        "samples_s": [
+          0.0017138789999080473,
+          0.0018239340001855453,
+          0.0017494730000180425,
+          0.001884712999981275,
+          0.0017575159999978496
+        ]
+      },
+      "repetitions": 5,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 17,
+          "step_decisions": 0,
+          "step_propagations": 32,
+          "step_backtracks": 0,
+          "step_runtime_s": 3.1225999919115566e-05
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 14,
+          "step_decisions": 0,
+          "step_propagations": 41,
+          "step_backtracks": 0,
+          "step_runtime_s": 4.087399997843022e-05
+        },
+        {
+          "step_number": 3,
+          "target_cell": "A2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 3,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 100,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012725700025839615
+        },
+        {
+          "step_number": 4,
+          "target_cell": "B2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 4,
+          "step_sat_calls": 11,
+          "step_decisions": 0,
+          "step_propagations": 97,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012804100015273434
+        },
+        {
+          "step_number": 5,
+          "target_cell": "C2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 5,
+          "step_sat_calls": 8,
+          "step_decisions": 0,
+          "step_propagations": 87,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012927900002068782
+        },
+        {
+          "step_number": 6,
+          "target_cell": "A3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 6,
+          "step_sat_calls": 7,
+          "step_decisions": 0,
+          "step_propagations": 96,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00016235800012509571
+        },
+        {
+          "step_number": 7,
+          "target_cell": "B3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 7,
+          "step_sat_calls": 5,
+          "step_decisions": 0,
+          "step_propagations": 73,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012444199978745019
+        },
+        {
+          "step_number": 8,
+          "target_cell": "C3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 8,
+          "step_sat_calls": 2,
+          "step_decisions": 0,
+          "step_propagations": 31,
+          "step_backtracks": 0,
+          "step_runtime_s": 5.14490000114165e-05
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_4x4_chain_1",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_4x4_chain_1.json",
+      "grid_size": 4,
+      "description": "Progressive 4x4 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 15,
+      "terminal_status": "SOLVED",
+      "total_steps": 15,
+      "initial_vars": 16,
+      "initial_prim_vars": 16,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 30,
+      "final_prim_vars": 16,
+      "final_aux_vars": 14,
+      "final_clauses": 67,
+      "total_sat_calls": 248,
+      "dpll_decisions": 0,
+      "dpll_propagations": 2363,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.004343765800513211,
+        "std_s": 4.971656858319658e-05,
+        "min_s": 0.004302182000628818,
+        "max_s": 0.004425138997248723,
+        "samples_s": [
+          0.004352182001184701,
+          0.004425138997248723,
+          0.004302182000628818,
+          0.004331980001325064,
+          0.004307346002178747
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.007193444199992882,
+        "std_s": 0.00017024891150795805,
+        "min_s": 0.007026220999932775,
+        "max_s": 0.0074771060001239675,
+        "samples_s": [
+          0.0071301300001778145,
+          0.0074771060001239675,
+          0.0071992189998582035,
+          0.00713454499987165,
+          0.007026220999932775
+        ]
+      },
+      "repetitions": 5,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 31,
+          "step_decisions": 0,
+          "step_propagations": 60,
+          "step_backtracks": 0,
+          "step_runtime_s": 6.365299987010076e-05
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 28,
+          "step_decisions": 0,
+          "step_propagations": 83,
+          "step_backtracks": 0,
+          "step_runtime_s": 9.050899961948744e-05
+        },
+        {
+          "step_number": 3,
+          "target_cell": "D1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D1",
+          "active_clues_count": 3,
+          "step_sat_calls": 26,
+          "step_decisions": 0,
+          "step_propagations": 103,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00011415800008762744
+        },
+        {
+          "step_number": 4,
+          "target_cell": "A2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 4,
+          "step_sat_calls": 25,
+          "step_decisions": 0,
+          "step_propagations": 173,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00021701000014218153
+        },
+        {
+          "step_number": 5,
+          "target_cell": "B2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 5,
+          "step_sat_calls": 22,
+          "step_decisions": 0,
+          "step_propagations": 197,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00028821699970649206
+        },
+        {
+          "step_number": 6,
+          "target_cell": "C2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 6,
+          "step_sat_calls": 20,
+          "step_decisions": 0,
+          "step_propagations": 199,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0002840270001343015
+        },
+        {
+          "step_number": 7,
+          "target_cell": "D2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D2",
+          "active_clues_count": 7,
+          "step_sat_calls": 19,
+          "step_decisions": 0,
+          "step_propagations": 207,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0003026349997981015
+        },
+        {
+          "step_number": 8,
+          "target_cell": "A3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 8,
+          "step_sat_calls": 16,
+          "step_decisions": 0,
+          "step_propagations": 191,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00031065500093063747
+        },
+        {
+          "step_number": 9,
+          "target_cell": "B3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 9,
+          "step_sat_calls": 14,
+          "step_decisions": 0,
+          "step_propagations": 181,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0002983100000619743
+        },
+        {
+          "step_number": 10,
+          "target_cell": "C3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 10,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 230,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0005249530004221015
+        },
+        {
+          "step_number": 11,
+          "target_cell": "D3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D3",
+          "active_clues_count": 11,
+          "step_sat_calls": 11,
+          "step_decisions": 0,
+          "step_propagations": 207,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0004545820002022083
+        },
+        {
+          "step_number": 12,
+          "target_cell": "A4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A4",
+          "active_clues_count": 12,
+          "step_sat_calls": 8,
+          "step_decisions": 0,
+          "step_propagations": 167,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00038833000030535914
+        },
+        {
+          "step_number": 13,
+          "target_cell": "B4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B4",
+          "active_clues_count": 13,
+          "step_sat_calls": 7,
+          "step_decisions": 0,
+          "step_propagations": 166,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0004525300003024313
+        },
+        {
+          "step_number": 14,
+          "target_cell": "C4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C4",
+          "active_clues_count": 14,
+          "step_sat_calls": 5,
+          "step_decisions": 0,
+          "step_propagations": 123,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0003268079997269524
+        },
+        {
+          "step_number": 15,
+          "target_cell": "D4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D4",
+          "active_clues_count": 15,
+          "step_sat_calls": 3,
+          "step_decisions": 0,
+          "step_propagations": 76,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00023580499987474468
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_5x5_chain_0",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_5x5_chain_0.json",
+      "grid_size": 5,
+      "description": "Progressive 5x5 deduction chain, variant 0; all hidden cards proved without guessing.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 24,
+      "terminal_status": "SOLVED",
+      "total_steps": 24,
+      "initial_vars": 25,
+      "initial_prim_vars": 25,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 40,
+      "final_prim_vars": 25,
+      "final_aux_vars": 15,
+      "final_clauses": 96,
+      "total_sat_calls": 615,
+      "dpll_decisions": 0,
+      "dpll_propagations": 8178,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.019387074400401615,
+        "std_s": 0.0003689963094374042,
+        "min_s": 0.01895073999799024,
+        "max_s": 0.01985678699793425,
+        "samples_s": [
+          0.019086000003198933,
+          0.01895073999799024,
+          0.019461177001403485,
+          0.019580668001481172,
+          0.01985678699793425
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.025904505000016797,
+        "std_s": 0.0004889274605787501,
+        "min_s": 0.025375098000040452,
+        "max_s": 0.02647746200000256,
+        "samples_s": [
+          0.02542899600007331,
+          0.025375098000040452,
+          0.026001644999951168,
+          0.026239324000016495,
+          0.02647746200000256
+        ]
+      },
+      "repetitions": 5,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 48,
+          "step_decisions": 0,
+          "step_propagations": 95,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00011573999950087455
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 47,
+          "step_decisions": 0,
+          "step_propagations": 139,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00016595500051153067
+        },
+        {
+          "step_number": 3,
+          "target_cell": "D1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D1",
+          "active_clues_count": 3,
+          "step_sat_calls": 45,
+          "step_decisions": 0,
+          "step_propagations": 178,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00020672000096055854
+        },
+        {
+          "step_number": 4,
+          "target_cell": "E1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E1",
+          "active_clues_count": 4,
+          "step_sat_calls": 43,
+          "step_decisions": 0,
+          "step_propagations": 213,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00025723700082380674
+        },
+        {
+          "step_number": 5,
+          "target_cell": "A2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 5,
+          "step_sat_calls": 41,
+          "step_decisions": 0,
+          "step_propagations": 285,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0004209959993204393
+        },
+        {
+          "step_number": 6,
+          "target_cell": "B2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 6,
+          "step_sat_calls": 39,
+          "step_decisions": 0,
+          "step_propagations": 310,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00044609299993680906
+        },
+        {
+          "step_number": 7,
+          "target_cell": "C2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 7,
+          "step_sat_calls": 36,
+          "step_decisions": 0,
+          "step_propagations": 323,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.000499601999990773
+        },
+        {
+          "step_number": 8,
+          "target_cell": "D2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D2",
+          "active_clues_count": 8,
+          "step_sat_calls": 34,
+          "step_decisions": 0,
+          "step_propagations": 339,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0004760700007864216
+        },
+        {
+          "step_number": 9,
+          "target_cell": "E2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E2",
+          "active_clues_count": 9,
+          "step_sat_calls": 33,
+          "step_decisions": 0,
+          "step_propagations": 361,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0005382220003866678
+        },
+        {
+          "step_number": 10,
+          "target_cell": "A3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 10,
+          "step_sat_calls": 30,
+          "step_decisions": 0,
+          "step_propagations": 477,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0009600020009656873
+        },
+        {
+          "step_number": 11,
+          "target_cell": "B3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 11,
+          "step_sat_calls": 29,
+          "step_decisions": 0,
+          "step_propagations": 549,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0012535579999166657
+        },
+        {
+          "step_number": 12,
+          "target_cell": "C3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 12,
+          "step_sat_calls": 27,
+          "step_decisions": 0,
+          "step_propagations": 565,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001494842000056451
+        },
+        {
+          "step_number": 13,
+          "target_cell": "D3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D3",
+          "active_clues_count": 13,
+          "step_sat_calls": 25,
+          "step_decisions": 0,
+          "step_propagations": 548,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0013861919994724303
+        },
+        {
+          "step_number": 14,
+          "target_cell": "E3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_E3",
+          "active_clues_count": 14,
+          "step_sat_calls": 22,
+          "step_decisions": 0,
+          "step_propagations": 505,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0012602649999280402
+        },
+        {
+          "step_number": 15,
+          "target_cell": "A4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A4",
+          "active_clues_count": 15,
+          "step_sat_calls": 21,
+          "step_decisions": 0,
+          "step_propagations": 502,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001310936999743717
+        },
+        {
+          "step_number": 16,
+          "target_cell": "B4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B4",
+          "active_clues_count": 16,
+          "step_sat_calls": 18,
+          "step_decisions": 0,
+          "step_propagations": 449,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001120581000122911
+        },
+        {
+          "step_number": 17,
+          "target_cell": "C4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C4",
+          "active_clues_count": 17,
+          "step_sat_calls": 16,
+          "step_decisions": 0,
+          "step_propagations": 415,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0010770970004614355
+        },
+        {
+          "step_number": 18,
+          "target_cell": "D4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D4",
+          "active_clues_count": 18,
+          "step_sat_calls": 15,
+          "step_decisions": 0,
+          "step_propagations": 433,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0012587910002821445
+        },
+        {
+          "step_number": 19,
+          "target_cell": "E4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E4",
+          "active_clues_count": 19,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 401,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0012716359995010862
+        },
+        {
+          "step_number": 20,
+          "target_cell": "A5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A5",
+          "active_clues_count": 20,
+          "step_sat_calls": 11,
+          "step_decisions": 0,
+          "step_propagations": 350,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001129463000324904
+        },
+        {
+          "step_number": 21,
+          "target_cell": "B5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B5",
+          "active_clues_count": 21,
+          "step_sat_calls": 9,
+          "step_decisions": 0,
+          "step_propagations": 295,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0009606350006379216
+        },
+        {
+          "step_number": 22,
+          "target_cell": "C5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C5",
+          "active_clues_count": 22,
+          "step_sat_calls": 7,
+          "step_decisions": 0,
+          "step_propagations": 236,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0007931739996820397
+        },
+        {
+          "step_number": 23,
+          "target_cell": "D5",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D5",
+          "active_clues_count": 23,
+          "step_sat_calls": 4,
+          "step_decisions": 0,
+          "step_propagations": 139,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00044930599983672437
+        },
+        {
+          "step_number": 24,
+          "target_cell": "E5",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_E5",
+          "active_clues_count": 24,
+          "step_sat_calls": 2,
+          "step_decisions": 0,
+          "step_propagations": 71,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00023288600004889304
+        }
+      ],
+      "error_message": null
+    },
+    {
+      "puzzle_id": "puzzle_5x5_chain_1",
+      "file_path": "/mnt/windowdata/Uninversity Data/Curriculum/HocKy5/C\u01a1 s\u1edf tr\u00ed tu\u1ec7 nh\u00e2n t\u1ea1o/Griductive-Solver/puzzles/puzzle_5x5_chain_1.json",
+      "grid_size": 5,
+      "description": "Progressive 5x5 deduction chain, variant 1; all hidden cards proved without guessing.",
+      "is_valid_format": true,
+      "clues_truth": true,
+      "uniqueness": "UNIQUE",
+      "solution_count": 1,
+      "playability": "SOLVABLE_NO_GUESS",
+      "expected_steps": 24,
+      "terminal_status": "SOLVED",
+      "total_steps": 24,
+      "initial_vars": 25,
+      "initial_prim_vars": 25,
+      "initial_aux_vars": 0,
+      "initial_clauses": 2,
+      "final_vars": 44,
+      "final_prim_vars": 25,
+      "final_aux_vars": 19,
+      "final_clauses": 100,
+      "total_sat_calls": 614,
+      "dpll_decisions": 0,
+      "dpll_propagations": 8091,
+      "dpll_backtracks": 0,
+      "dpll_runtime": {
+        "mean_s": 0.017052456599913057,
+        "std_s": 0.0001275031036154195,
+        "min_s": 0.016847297999220245,
+        "max_s": 0.017152681000652592,
+        "samples_s": [
+          0.01711830699946404,
+          0.016847297999220245,
+          0.017134420999809663,
+          0.017152681000652592,
+          0.017009576000418747
+        ]
+      },
+      "e2e_runtime": {
+        "mean_s": 0.023564311600011933,
+        "std_s": 0.00018168664025956075,
+        "min_s": 0.023286179000024276,
+        "max_s": 0.02371871100012868,
+        "samples_s": [
+          0.02361960000007457,
+          0.023286179000024276,
+          0.02371871100012868,
+          0.023711326000011468,
+          0.023485741999820675
+        ]
+      },
+      "repetitions": 5,
+      "counters_deterministic": true,
+      "steps_detail": [
+        {
+          "step_number": 1,
+          "target_cell": "B1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B1",
+          "active_clues_count": 1,
+          "step_sat_calls": 49,
+          "step_decisions": 0,
+          "step_propagations": 96,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00012128000116717885
+        },
+        {
+          "step_number": 2,
+          "target_cell": "C1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C1",
+          "active_clues_count": 2,
+          "step_sat_calls": 46,
+          "step_decisions": 0,
+          "step_propagations": 137,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00016109699959088175
+        },
+        {
+          "step_number": 3,
+          "target_cell": "D1",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D1",
+          "active_clues_count": 3,
+          "step_sat_calls": 44,
+          "step_decisions": 0,
+          "step_propagations": 175,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00021873899868296576
+        },
+        {
+          "step_number": 4,
+          "target_cell": "E1",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E1",
+          "active_clues_count": 4,
+          "step_sat_calls": 43,
+          "step_decisions": 0,
+          "step_propagations": 299,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00040952000017568935
+        },
+        {
+          "step_number": 5,
+          "target_cell": "A2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A2",
+          "active_clues_count": 5,
+          "step_sat_calls": 40,
+          "step_decisions": 0,
+          "step_propagations": 359,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0005724500013002398
+        },
+        {
+          "step_number": 6,
+          "target_cell": "B2",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B2",
+          "active_clues_count": 6,
+          "step_sat_calls": 38,
+          "step_decisions": 0,
+          "step_propagations": 379,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0005631339997762552
+        },
+        {
+          "step_number": 7,
+          "target_cell": "C2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C2",
+          "active_clues_count": 7,
+          "step_sat_calls": 37,
+          "step_decisions": 0,
+          "step_propagations": 405,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0006167860005916737
+        },
+        {
+          "step_number": 8,
+          "target_cell": "D2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D2",
+          "active_clues_count": 8,
+          "step_sat_calls": 35,
+          "step_decisions": 0,
+          "step_propagations": 418,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0006548489993747353
+        },
+        {
+          "step_number": 9,
+          "target_cell": "E2",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E2",
+          "active_clues_count": 9,
+          "step_sat_calls": 33,
+          "step_decisions": 0,
+          "step_propagations": 427,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.000714156000640287
+        },
+        {
+          "step_number": 10,
+          "target_cell": "A3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A3",
+          "active_clues_count": 10,
+          "step_sat_calls": 31,
+          "step_decisions": 0,
+          "step_propagations": 432,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0007276009989709564
+        },
+        {
+          "step_number": 11,
+          "target_cell": "B3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B3",
+          "active_clues_count": 11,
+          "step_sat_calls": 29,
+          "step_decisions": 0,
+          "step_propagations": 433,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0007539870007349236
+        },
+        {
+          "step_number": 12,
+          "target_cell": "C3",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C3",
+          "active_clues_count": 12,
+          "step_sat_calls": 27,
+          "step_decisions": 0,
+          "step_propagations": 457,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0008926919995246863
+        },
+        {
+          "step_number": 13,
+          "target_cell": "D3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_D3",
+          "active_clues_count": 13,
+          "step_sat_calls": 24,
+          "step_decisions": 0,
+          "step_propagations": 479,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0010707850008202513
+        },
+        {
+          "step_number": 14,
+          "target_cell": "E3",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_E3",
+          "active_clues_count": 14,
+          "step_sat_calls": 22,
+          "step_decisions": 0,
+          "step_propagations": 461,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0010507009994853433
+        },
+        {
+          "step_number": 15,
+          "target_cell": "A4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_A4",
+          "active_clues_count": 15,
+          "step_sat_calls": 21,
+          "step_decisions": 0,
+          "step_propagations": 460,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0010187759994551016
+        },
+        {
+          "step_number": 16,
+          "target_cell": "B4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_B4",
+          "active_clues_count": 16,
+          "step_sat_calls": 18,
+          "step_decisions": 0,
+          "step_propagations": 413,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0009618129995487834
+        },
+        {
+          "step_number": 17,
+          "target_cell": "C4",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_C4",
+          "active_clues_count": 17,
+          "step_sat_calls": 16,
+          "step_decisions": 0,
+          "step_propagations": 383,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0008989829993879539
+        },
+        {
+          "step_number": 18,
+          "target_cell": "D4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D4",
+          "active_clues_count": 18,
+          "step_sat_calls": 15,
+          "step_decisions": 0,
+          "step_propagations": 403,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.001052964000564316
+        },
+        {
+          "step_number": 19,
+          "target_cell": "E4",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_E4",
+          "active_clues_count": 19,
+          "step_sat_calls": 13,
+          "step_decisions": 0,
+          "step_propagations": 375,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0010549180001362402
+        },
+        {
+          "step_number": 20,
+          "target_cell": "A5",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_A5",
+          "active_clues_count": 20,
+          "step_sat_calls": 10,
+          "step_decisions": 0,
+          "step_propagations": 319,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00105302299948562
+        },
+        {
+          "step_number": 21,
+          "target_cell": "B5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_B5",
+          "active_clues_count": 21,
+          "step_sat_calls": 9,
+          "step_decisions": 0,
+          "step_propagations": 295,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0009860629995728232
+        },
+        {
+          "step_number": 22,
+          "target_cell": "C5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_C5",
+          "active_clues_count": 22,
+          "step_sat_calls": 7,
+          "step_decisions": 0,
+          "step_propagations": 236,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0007565850003175001
+        },
+        {
+          "step_number": 23,
+          "target_cell": "D5",
+          "target_verdict": "INNOCENT",
+          "revealed_clue_id": "c_D5",
+          "active_clues_count": 23,
+          "step_sat_calls": 5,
+          "step_decisions": 0,
+          "step_propagations": 173,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.0005312220000632806
+        },
+        {
+          "step_number": 24,
+          "target_cell": "E5",
+          "target_verdict": "CRIMINAL",
+          "revealed_clue_id": "c_E5",
+          "active_clues_count": 24,
+          "step_sat_calls": 2,
+          "step_decisions": 0,
+          "step_propagations": 77,
+          "step_backtracks": 0,
+          "step_runtime_s": 0.00027618300009635277
+        }
+      ],
+      "error_message": null
     }
   ]
 }
