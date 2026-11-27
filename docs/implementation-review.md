@@ -8,11 +8,11 @@ This is a source/test review, not a grade guarantee or confirmation of external 
 The user subsequently supplied instructor clarification: six playable maps are
 required, two each at 3x3, 4x4, and 5x5, all with unique solutions. Agent solving
 must be animated. A map picker may replace the Load button; multiple initial
-face-up cards are allowed. Consequently, the earlier PDF-only assessment below
-is incomplete: the two 5x5 maps and solver animation are required,
-not optional enhancements. Animation was subsequently implemented as described
-below; the map work remains outstanding. Ambiguous/invalid test fixtures do not count
-toward the six playable maps. See `references.md` for provenance and research.
+face-up cards are allowed. Both solver animation and all six playable unique
+no-guess maps (`puzzle_3x3_progressive`, `puzzle_3x3_chain_1`,
+`puzzle_4x4_progressive`, `puzzle_4x4_chain_1`, `puzzle_5x5_chain_0`,
+`puzzle_5x5_chain_1`) have been implemented and verified. Ambiguous/invalid test
+fixtures remain separate diagnostic cases. See `references.md` for provenance.
 
 ## GUI (section 4.1, page 5)
 
@@ -36,31 +36,28 @@ selection/highlighting, Auto Solve, and Restart on 3x3 and 4x4 boards.
 ## Remaining findings
 
 1. **Experiment timeout/failure handling (section 4.5, page 7):**
-   `ExperimentRunner.timeout_seconds` is stored and exported but not enforced in
-   `run_puzzle`. Unexpected exceptions for normal manifest entries can abort the
-   suite instead of preserving a failure row. The deliberately invalid fixture
-   does get its own result. Add actual bounded execution and per-case error rows
-   before claiming timeout support.
-2. **Report (section 4.6, page 8):** No project report PDF was found. The assignment
+   **Resolved (2026-11-27):** `ExperimentRunner.run_puzzle` now executes each
+   manifest case inside a bounded `multiprocessing` (`spawn`) worker enforcing
+   `timeout_seconds` and catching unexpected runtime errors so `TIMEOUT`, `ERROR`,
+   and `INVALID_PUZZLE` rows are retained across CSV, JSON, and Markdown exports.
+   `experiments/` results have been regenerated across all 10 manifest entries
+   (including both 5x5 stress cases).
+2. **Report (section 4.6, page 8):** No project report PDF was found yet. The assignment
    PDF and experimental Markdown summary do not substitute for the required
    report, contributions, encoding derivations, references, and AI-use appendix.
 3. **Demo (section 4.7, page 8):** No submitted demo artifact/link was verified in
    this review. Need a narrated/subtitled 5-10 minute Drive video and verification
    that anyone with the link can view it.
-4. **Submission (section 5, page 9):** No student-ID-named ZIP/RAR or final
-   submission layout was found. Dependency/run instructions must be checked in
-   a clean environment when preparing the package.
-5. **GUI polish:** The later warm-theme redesign updates puzzle title, size and
-   progress on Load. Hint used to overwrite the textual forced-verdict banner.
-   This hint presentation
-   has now been replaced with an evidence banner and explicit highlighting of
-   clue-owner cards. The GUI Auto Solve now reveals one card per timer tick and
-   supports Pause, with cancellation on Load/Restart. The original synchronous
-   API remains for headless callers. A heavy individual SAT step can still block
-   the UI thread; a background worker is a remaining improvement.
-6. **Documentation status:** `TASKS.md` and the architecture introduction still
-   describe much implemented work as pending/nonexistent. Reconcile them with
-   verified acceptance checks; do not treat unchecked boxes alone as missing code.
+4. **Submission (section 5, page 9):** `requirements.txt` is now present at root;
+   still need the final student-ID-named ZIP/RAR (`Source/` + `Report.pdf`) and
+   clean-environment run check when packaging.
+5. **GUI polish:** The warm-theme redesign updates puzzle title, size and
+   progress on Load, provides a two-step Hint spotlight (`Hint` → `Reveal` → `Clear`),
+   reveals one proven card per timer tick during `Auto Solve` with `Pause`, and
+   has been split into focused modules under `src/griductive/ui/`.
+6. **Documentation status:** `TASKS.md` checkboxes `T01–T18` have been reconciled
+   with verified automated test suites (`T19–T21` remain open for external report,
+   video, and archive delivery).
 
 ## Other implemented sections
 

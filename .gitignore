@@ -3,6 +3,11 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .pytest_tmp_*/
+.coverage
+htmlcov/
+build/
+dist/
 .venv/
 venv/
 tmp/
+.agents/teamwork/
