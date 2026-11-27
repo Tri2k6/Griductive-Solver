@@ -106,8 +106,10 @@ bar and Logs use Atkinson Hyperlegible for reading text.
 Hovering over a character lifts its border without moving the grid. **Reduce
 Hover Motion** keeps the highlight and skips the movement.
 
-**Puzzles** lists puzzle JSON files in the bundled folder. Use **Change
-Folder** for other collections. **Settings** adjusts the interval between card
+**Puzzles** lists puzzle JSON files in the bundled folder. The six puzzles
+solvable without guessing are the 3×3 and 4×4 progressive boards, the 3×3 and
+4×4 chain boards, and both 5×5 chain boards. Use **Change Folder** for other
+collections. **Settings** adjusts the interval between card
 reveals. **Check Board** verifies whether the current public clues leave no
 forced move (`STALLED`) or admit no consistent assignment (`INCONSISTENT`).
 The first result describes the current revealed state. Full-puzzle uniqueness

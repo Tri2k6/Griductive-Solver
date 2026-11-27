@@ -146,6 +146,15 @@ def test_invalid_fixture_manifest_classification():
     assert entry["expected_playability"] == "SKIPPED"
 
 
+def test_two_playable_puzzles_for_each_board_size():
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    playable_sizes = [
+        entry["grid_size"] for entry in manifest["puzzles"]
+        if entry["expected_playability"] == "SOLVABLE_NO_GUESS"
+    ]
+    assert sorted(playable_sizes) == [3, 3, 4, 4, 5, 5]
+
+
 def test_3x3_progressive_solves_in_8_steps():
     """Test 3x3 progressive puzzle step progression."""
     from griductive.game.controller import GameController, AutoSolveStatus
