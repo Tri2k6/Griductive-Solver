@@ -140,12 +140,9 @@ def _run_puzzle_worker(
     manifest_path: str,
     entry: dict[str, Any],
     repetitions: int,
-     artificial_delay_s: float = 0.0,
 ) -> None:
     """Execute a single puzzle benchmark in an isolated process for deadline enforcement."""
     try:
-        if artificial_delay_s > 0:
-            time.sleep(artificial_delay_s)
         runner = ExperimentRunner(manifest_path=manifest_path, repetitions=repetitions)
         res = runner._run_puzzle_direct(entry, repetitions=repetitions)
         connection.send((res, None))
@@ -180,17 +177,19 @@ class ExperimentRunner:
     ) -> ExperimentResult:
         """Build a preserved failure/timeout row so no manifest case is dropped."""
         empty = TimingStats.from_samples(())
+        grid_size = entry.get("grid_size")
+        expected_steps = entry.get("expected_steps")
         return ExperimentResult(
             puzzle_id=str(entry.get("id", "unknown")),
             file_path=str(entry.get("file", "")),
-            grid_size=int(entry.get("grid_size", 0)),
+            grid_size=grid_size if type(grid_size) is int else 0,
             description=str(entry.get("description", "")),
             is_valid_format=False,
             clues_truth=False,
             uniqueness="UNKNOWN",
             solution_count=0,
             playability="SKIPPED",
-            expected_steps=int(entry.get("expected_steps", 0)),
+            expected_steps=expected_steps if type(expected_steps) is int else 0,
             terminal_status=status,
             total_steps=0,
             initial_vars=0,
@@ -217,22 +216,32 @@ class ExperimentRunner:
         self,
         entry: dict[str, Any],
         repetitions: int | None = None,
+        *,
+        manifest_path: str | Path | None = None,
     ) -> ExperimentResult:
-        """Run performance evaluation on one puzzle within the configured wall-clock timeout."""
+        """Benchmark one puzzle within the configured wall-clock timeout.
+
+        Use the supplied manifest to resolve relative puzzle paths when provided.
+        """
+        if not isinstance(entry, dict):
+            return self._failure_result({}, "ERROR", "Manifest entry must be a JSON object.")
+        for field in ("grid_size", "expected_steps"):
+            if field in entry and type(entry[field]) is not int:
+                return self._failure_result(entry, "ERROR", f"Manifest field '{field}' must be an integer.")
+
         reps = self.repetitions if repetitions is None else max(1, repetitions)
-        delay_s = float(entry.get("_test_delay_s", 0.0))
+        source_manifest = self.manifest_path if manifest_path is None else Path(manifest_path)
         ctx = multiprocessing.get_context("spawn")
         parent_conn, child_conn = ctx.Pipe(duplex=False)
         proc = ctx.Process(
             target=_run_puzzle_worker,
-            args=(child_conn, str(self.manifest_path), entry, reps, delay_s),
+            args=(child_conn, str(source_manifest), entry, reps),
         )
         proc.start()
         child_conn.close()
         try:
             if not parent_conn.poll(self.timeout_seconds):
                 proc.terminate()
-                proc.join()
                 return self._failure_result(
                     entry,
                     "TIMEOUT",
@@ -265,12 +274,12 @@ class ExperimentRunner:
         raw_file = entry.get("file", "")
         fpath = Path(raw_file)
         if not fpath.is_absolute():
-            cand1 = self.manifest_path.parent.parent / raw_file
-            cand2 = self.manifest_path.parent / raw_file
-            if cand1.is_file():
-                fpath = cand1
-            elif cand2.is_file():
-                fpath = cand2
+            # Bundled manifests also use paths relative to the project root.
+            for directory in (self.manifest_path.parent, self.manifest_path.parent.parent):
+                candidate = directory / fpath
+                if candidate.is_file():
+                    fpath = candidate
+                    break
 
         grid_size = entry.get("grid_size", 0)
         desc = entry.get("description", "")
@@ -427,7 +436,10 @@ class ExperimentRunner:
         data = json.loads(m_path.read_text(encoding="utf-8"))
         puzzles = data.get("puzzles", [])
 
-        results = tuple(self.run_puzzle(entry, repetitions=reps) for entry in puzzles)
+        results = tuple(
+            self.run_puzzle(entry, repetitions=reps, manifest_path=m_path)
+            for entry in puzzles
+        )
 
         now_str = datetime.datetime.now(datetime.timezone.utc).isoformat()
         platform_meta = {
